@@ -17,6 +17,8 @@ class singlet_destroyer
 		~singlet_destroyer();
 		void initialize(semaphor_manager*);
 };
+
+//Менеджер-синглтон
 class semaphor_manager
 {
 	private:

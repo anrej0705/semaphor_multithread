@@ -6,6 +6,8 @@
 #include <qstring.h>
 #include <mutex>
 #include <string>
+#include "boost/thread/thread.hpp"
+#include "boost/chrono/chrono.hpp"
 #include "boost/container/vector.hpp"
 #include <qobject.h>
 std::mutex t_mut;
@@ -34,19 +36,24 @@ semaphor::~semaphor()
 	if (sThread->joinable())
 		sThread->join();
 }
+
+//Не используется
 void semaphor::test_hello()
 {
 	semaphor_manager::getInstance().add_semaphor(myId);
 }
+
+//Создать поток и запустить
 void semaphor::new_thread(uint16_t a)
 {
 	myId = a;
 	qDebug() << "[THREAD]Creating a new semaphore-thread with id =" << myId;
-	sThread = new std::thread(&semaphor::run_thread, this);
+	sThread = new boost::thread(&semaphor::run_thread, this);
 	if (sThread->joinable())
 		sThread->detach();
 }
 
+//Добавить соседа в список зависимостей(см описание в листинге менеджера)
 void semaphor::add_neighbour(uint16_t nb_id)
 {
 	qDebug() << "[THREAD]Adding new neighbour id =" << nb_id;
@@ -54,11 +61,20 @@ void semaphor::add_neighbour(uint16_t nb_id)
 	neighbout_reg_state.push_back(0x00);
 }
 
+//Получить регистр состояния
 uint8_t semaphor::get_reg_state()
 {
 	return status;
 }
 
+/*
+* Опрос соседей через менеджера
+* 
+* Светофор отправляет запрос менеджеру с указанием ИД светофора, полученного в методе add_neighbour
+* 
+* Менеджер ищет светофор у себя и в случае успеха отправляет запрос. Далее ответ через менеджера направляются
+* Запросившему светофору
+*/
 void semaphor::request_neighbour_status()
 {
 	QString logout;
@@ -96,6 +112,11 @@ void semaphor::request_neighbour_status()
 	t_mut.unlock();
 }
 
+/*
+* Проверка дороги. Если все соседи светофора запретили движение то считается
+* что дорога пуста и светофор направляет запрос менджеру на разрешение пропуска
+* транспорта
+*/
 bool semaphor::road_safety_check()
 {
 	//if(myId == 0x0009 || myId == 0x000A || myId == 0x000B)
@@ -119,9 +140,10 @@ bool semaphor::road_safety_check()
 	return accepted;
 }
 
+//Пропуск автомобиля
 void semaphor::car_pass()
 {
-	QString logout;
+	QString logout; //Логи в бекенд
 	if (queue > 0 && transitAllowed == 1)
 	{
 		logout += "[THREAD][ " + QString::fromStdString(myName) + " ][ID=" + QString::number(myId).leftJustified(2, ' ') +"][    PASS    ][Queue size=" + QString::number(queue).leftJustified(3, ' ') + "][neighbours status:";
@@ -191,11 +213,13 @@ void semaphor::car_pass()
 	qDebug() << logout;
 }
 
+//Задать имя светофору(показывается в логах бекенда только)
 void semaphor::set_name(std::string name)
 {
 	myName = name;
 }
 
+//Читает команду от менеджера(поле volatile) и выполняет
 void semaphor::read_manager_command()
 {
 	QString logout;
@@ -257,12 +281,14 @@ void semaphor::read_manager_command()
 	logout.clear();
 }
 
+//Скопировать график себе посекционно
 void semaphor::set_polling_graph(std::pair<uint8_t, uint8_t> section)
 {
 	qDebug() << "[THREAD, Semaphor id" << QString::number(myId) << "]Add section{" << QString::number(section.first) << QString::number(section.second) << "}";
 	polling_graph->push_back(std::pair<uint8_t, uint8_t>(section.first, section.second));
 }
 
+//Расчет частоты опроса менеджера. Работает аналогично расчету в менеджере
 void semaphor::calc_query_cycle()
 {
 	qDebug() << "[THREAD, Semaphor id" << QString::number(myId) << "]Calc cycle, current" << QString::number(cycle_timer) << "times";
@@ -278,6 +304,7 @@ void semaphor::calc_query_cycle()
 	qDebug() << "[THREAD, Semaphor id" << QString::number(myId) << "]Set cycle length" << QString::number(cycle_timer) << "times";
 }
 
+//Получить текущее состояние таймера светофора
 uint8_t semaphor::get_cycle_timer_value()
 {
 	return cycle_timer;
@@ -293,7 +320,7 @@ void semaphor::run_thread()
 	{
 		//qDebug() << "[THREAD" << QString::number(myId) << "]Cycle" << cycle_cnt;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(42));
+		boost::this_thread::sleep_for(boost::chrono::milliseconds(42));
 		//Читаем команду полученную от менеджера
 		read_manager_command();
 

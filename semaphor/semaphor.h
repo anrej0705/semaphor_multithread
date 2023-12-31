@@ -3,8 +3,11 @@
 #include <vector>
 #include <thread>
 #include <string>
+#include "boost/thread/thread.hpp"
+#include "boost/chrono/chrono.hpp"
 #include "boost/container/vector.hpp"
 #include <QtWidgets>
+//Светофор
 class semaphor : public QWidget
 {
 	Q_OBJECT
@@ -24,7 +27,7 @@ class semaphor : public QWidget
 		uint16_t waitingTimer;	//Таймер ожидания в циклах, задаётся менеджером
 		uint16_t roadscanTimer;	//Таймер съемки дороги перед собой
 		uint16_t transitionAllowTimer;	//Таймер разрешения проезда
-		std::thread *sThread;
+		boost::thread *sThread;
 		bool roadBusy;	//Флаг занятой дороги
 	public:
 		bool stop_thread;

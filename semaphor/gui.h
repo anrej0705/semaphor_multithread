@@ -3,10 +3,18 @@
 #include "boost/container/vector.hpp"
 #include "boost/thread/thread.hpp"
 
+/*
+* Фронтенд часть
+* 
+* Графический интерфейс, индикация и взаимодействие/оповещение пользователя
+*/
+
+//Опережающие объявления
 class semaphor_slot;
 class semaphor_gui;
 class semaphor_graphic;
 
+//Класс, гарантирующий удаление синглета после закрытия проги
 class singlet_destroyer2
 {
 	private:
@@ -15,6 +23,10 @@ class singlet_destroyer2
 		~singlet_destroyer2();
 		void initialize(semaphor_gui*);
 };
+
+/*
+* Основной класс. Компонует виджеты и создает
+*/
 class semaphor_gui : public QWidget
 {
 	Q_OBJECT
@@ -96,6 +108,7 @@ class semaphor_gui : public QWidget
 
 };
 
+//Генератор виджета-панели управления светофоров с привязкой к ИД
 class semaphor_slot : public QGroupBox
 {
 	Q_OBJECT
@@ -131,6 +144,7 @@ class semaphor_slot : public QGroupBox
 		void slot_decrement_queue();
 };
 
+//Генератор графического представления светофора на карте(тормозит интерфейс!)
 class semaphor_graphic : public QWidget
 {
 	Q_OBJECT

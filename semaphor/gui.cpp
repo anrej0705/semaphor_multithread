@@ -187,6 +187,9 @@ semaphor_gui& semaphor_gui::getInstance()
 	return *s_slot_ptr;
 }
 
+/*
+* Добавляет слот в виде панели управления и выполняет привязку по ИД
+*/
 void semaphor_gui::add_slot(uint16_t sem_id)
 {
 	semaphor_slots->push_back(new semaphor_slot);
@@ -199,6 +202,7 @@ void semaphor_gui::add_slot(uint16_t sem_id)
 	++slot_cnt;
 }
 
+//Поток вызывает этот метод чтобы передать информацию о состоянии очереди
 void semaphor_gui::write_queue_cnt(uint16_t sem_id, uint16_t queue_cnt)
 {
 	//THREAD_LOCK
@@ -208,6 +212,7 @@ void semaphor_gui::write_queue_cnt(uint16_t sem_id, uint16_t queue_cnt)
 	//NOTIFY_ALL_THREAD
 }
 
+//Записывает в таблицу информацию. Вызывается менеджером
 void semaphor_gui::write_table_content(uint8_t section_num, uint8_t row_num, uint16_t arg)
 {
 	QModelIndex index = table->index(section_num, row_num);
@@ -215,12 +220,16 @@ void semaphor_gui::write_table_content(uint8_t section_num, uint8_t row_num, uin
 	//table->dataChanged(index, index);
 }
 
+//Запускает поток обслуживающий графический интерфейс
 void semaphor_gui::run_gui()
 {
 	gui_thread = new boost::thread(&semaphor_gui::gui, this);
 	gui_thread->detach();
 }
 
+//Обслуживание(по факту дёрганье) графического интерфейса
+//Данный метод является костылём который убирает периодическое
+//Подвисание интерфейса во время работы
 void semaphor_gui::gui()
 {
 	QModelIndex index_bot = table->index(0, 0);
@@ -252,6 +261,7 @@ void semaphor_gui::gui()
 	}
 }
 
+//Записывает флаг состояния светофора(красный или зелёный), вызывается потоком
 void semaphor_gui::set_signal(uint16_t sem_id, bool signal)
 {
 	//Упрощенная реализация. В более сложной модели потребуется замена вектора на карту либо вектор + std::pair
@@ -265,6 +275,7 @@ void semaphor_gui::set_signal(uint16_t sem_id, bool signal)
 	//NOTIFY_ALL_THREAD
 }
 
+//Запись сообщения в консоль пользователя(не бекенд!)
 void semaphor_gui::slot_post_console_msg(QString msg)
 {
 	//THREAD_LOCK
@@ -273,6 +284,7 @@ void semaphor_gui::slot_post_console_msg(QString msg)
 	//NOTIFY_ALL_THREAD
 }
 
+//Отображение ГУЯ
 void semaphor_gui::showGUI()
 {
 	//THREAD_LOCK
@@ -280,6 +292,7 @@ void semaphor_gui::showGUI()
 	//NOTIFY_ALL_THREAD
 }
 
+//Перехватчик события закрытия программы. Сначала останавливаются потоки, потом сама программа
 void semaphor_gui::closeEvent(QCloseEvent* ce)
 {
 	slot_post_console_msg("[LOG]Stopping threads, moment...");
@@ -289,6 +302,7 @@ void semaphor_gui::closeEvent(QCloseEvent* ce)
 	ce->accept();
 }
 
+//Вызывается пользователем. Задаёт частоту генератора
 void semaphor_gui::set_generator_frequency(int frequency)
 {
 	//slot_post_console_msg("[GUI]Set generator frequency " + QString::number(frequency));
@@ -296,6 +310,7 @@ void semaphor_gui::set_generator_frequency(int frequency)
 	semaphor_manager::getInstance().set_gen_freq(frequency);
 }
 
+//Вызывается пользователем. Задаёт режим работы генератора(вкл или выкл)
 void semaphor_gui::switch_generator_mode()
 {
 	gen_mode = !gen_mode;
@@ -311,6 +326,7 @@ void semaphor_gui::switch_generator_mode()
 	}
 }
 
+//Добавляет графическое представление светофора с привязкой к ИД на карту
 void semaphor_gui::add_graphic_semaphor(uint16_t sem_id, std::pair<int16_t, int16_t> sem_coord)
 {
 	s_graph[sem_id]->set_coord(sem_coord.first, sem_coord.second);
@@ -319,6 +335,7 @@ void semaphor_gui::add_graphic_semaphor(uint16_t sem_id, std::pair<int16_t, int1
 	//semaphor_graphic_arr->at(s_g_cnt) = new semaphor_graphic(this, sem_id, sem_coord.first, sem_coord.second);
 }
 
+//Инициализация интерфейса слота панели управления светофором
 semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 {
 	myId = 0;
@@ -379,23 +396,27 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 	this->setFixedWidth(64);
 	//this->setFixedHeight(360);
 
+	//Подключаем кнопки к слотам
 	if (!QObject::connect(btn_increment, SIGNAL(clicked()), this, SLOT(slot_increment_queue())))
 		QErrorMessage::qtHandler();
 	if (!QObject::connect(btn_decrement, SIGNAL(clicked()), this, SLOT(slot_decrement_queue())))
 		QErrorMessage::qtHandler();
 }
 
+//Для дебага
 void semaphor_gui::slot_receive_semaphor_info(std::pair<uint16_t, uint16_t> info)
 {
 	qDebug() << "Receive signal {" << QString::number(info.first) << QString::number(info.second);
 }
 
+//Записывает ИД светофора в панель
 void semaphor_slot::slot_set_id(uint16_t sem_id)
 {
 	myId = sem_id;
 	id->setText(QString::number(sem_id));
 }
 
+//Вызывается потоком, записывает очередь машин
 void semaphor_slot::slot_set_queue(uint16_t queue_cnt)
 {
 	//THREAD_LOCK
@@ -413,6 +434,7 @@ void semaphor_slot::slot_set_queue(uint16_t queue_cnt)
 	//NOTIFY_ALL_THREAD
 }
 
+//Записывает состояние светофора(красный или зелёный), вызывается потоком
 void semaphor_slot::slot_set_signal(bool ssign)
 {
 	//THREAD_LOCK
@@ -427,11 +449,13 @@ void semaphor_slot::slot_set_signal(bool ssign)
 	//NOTIFY_ALL_THREAD
 }
 
+//Получение ИД панели
 uint16_t semaphor_slot::read_my_id()
 {
 	return myId;
 }
 
+//Добавить/убавить очередь на 1 машину
 void semaphor_slot::slot_increment_queue()
 {
 	semaphor_manager::getInstance().increment_semaphor_queue(myId);
@@ -442,6 +466,8 @@ void semaphor_slot::slot_decrement_queue()
 	semaphor_manager::getInstance().decrement_semaphor_queue(myId);
 }
 
+
+//Конструкторы на все случаи жизни
 semaphor_graphic::semaphor_graphic(QWidget* qwgt) : QWidget(qwgt)
 {
 	s_coord = new QPoint;
@@ -471,6 +497,7 @@ semaphor_graphic::semaphor_graphic(QWidget* qwgt, int16_t xC, int16_t yC, uint16
 	//semaphor_gui::getInstance().slot_post_console_msg("[GUI]Set semaphor coord X=" + QString::number(s_coord->x()) + " Y=" + QString::number(s_coord->y()));
 }
 
+//Перехват события отрисовщика
 void semaphor_graphic::paintEvent(QPaintEvent* event)
 {
 	this->setGeometry(s_coord->x(), s_coord->y(), 48, 64);
@@ -509,12 +536,16 @@ void semaphor_graphic::set_id(uint16_t sem_id)
 	myId = sem_id;
 }
 
+//Задание координат светофора
 void semaphor_graphic::set_coord(int16_t xC, int16_t yC)
 {
 	s_coord->setX(xC);
 	s_coord->setY(yC);
+
+	this->repaint();
 }
 
+//Записать состояние светофора. Вызывается потоком
 void semaphor_graphic::set_state(bool state)
 {
 	myState = state;

@@ -12,7 +12,7 @@ std::mutex t_mut;
 
 semaphor::semaphor()
 {
-	//Инициализация
+	//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 	myName = "NULL";
 	sThread = NULL;
 	myId = 0x0000;
@@ -283,7 +283,7 @@ uint8_t semaphor::get_cycle_timer_value()
 	return cycle_timer;
 }
 
-//Основной поток светофора
+//РћСЃРЅРѕРІРЅРѕР№ РїРѕС‚РѕРє СЃРІРµС‚РѕС„РѕСЂР°
 void semaphor::run_thread()
 {
 	QString logout;
@@ -294,7 +294,7 @@ void semaphor::run_thread()
 		//qDebug() << "[THREAD" << QString::number(myId) << "]Cycle" << cycle_cnt;
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(42));
-		//Читаем команду полученную от менеджера
+		//Р§РёС‚Р°РµРј РєРѕРјР°РЅРґСѓ РїРѕР»СѓС‡РµРЅРЅСѓСЋ РѕС‚ РјРµРЅРµРґР¶РµСЂР°
 		read_manager_command();
 
 		if (stop_thread)
@@ -303,8 +303,8 @@ void semaphor::run_thread()
 			break;
 		}
 
-		//Передаем менеджеру текущую очередь
-		//Опрашиваем соседей
+		//РџРµСЂРµРґР°РµРј РјРµРЅРµРґР¶РµСЂСѓ С‚РµРєСѓС‰СѓСЋ РѕС‡РµСЂРµРґСЊ
+		//РћРїСЂР°С€РёРІР°РµРј СЃРѕСЃРµРґРµР№
 		if (timer == cycle_timer*2)
 		{
 			semaphor_manager::getInstance().load_s_queue(myId, queue);
@@ -315,7 +315,7 @@ void semaphor::run_thread()
 
 		semaphor_gui::getInstance().write_queue_cnt(myId, queue);
 
-		//Запрашиваем у менеджера состояние соседей
+		//Р—Р°РїСЂР°С€РёРІР°РµРј Сѓ РјРµРЅРµРґР¶РµСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ СЃРѕСЃРµРґРµР№
 		for (uint8_t a = 0; a < static_cast<uint8_t>(neighbour->size()); ++a)
 		{
 			switch (neighbout_reg_state[a])
@@ -357,10 +357,10 @@ void semaphor::run_thread()
 			logout.clear();
 		}
 
-		//Проверяем пропускает ли какой нибудь сосед машины
+		//РџСЂРѕРІРµСЂСЏРµРј РїСЂРѕРїСѓСЃРєР°РµС‚ Р»Рё РєР°РєРѕР№ РЅРёР±СѓРґСЊ СЃРѕСЃРµРґ РјР°С€РёРЅС‹
 		if (road_safety_check()&&queue>0)
 		{
-			//Запрашиваем разрешение на транзит
+			//Р—Р°РїСЂР°С€РёРІР°РµРј СЂР°Р·СЂРµС€РµРЅРёРµ РЅР° С‚СЂР°РЅР·РёС‚
 			if (semaphor_manager::getInstance().query_transit(myId))
 			{
 				qDebug() << "[THREAD, semaphor id =" << QString::number(myId).leftJustified(2, ' ') << "] Transit";
@@ -386,7 +386,7 @@ void semaphor::run_thread()
 			car_pass();
 		}
 
-		//Костыль
+		//РљРѕСЃС‚С‹Р»СЊ
 		//state = semaphor_manager::getInstance().read_s_state(myId);
 
 		/*logout += "[THREAD]Semaphor id = " + QString::number(myId) + " queue size " + QString::number(queue) + " ";

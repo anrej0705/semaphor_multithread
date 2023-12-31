@@ -13,14 +13,14 @@
 #include <condition_variable>
 #include <map>
 
-//Генерация рандома
+//Р“РµРЅРµСЂР°С†РёСЏ СЂР°РЅРґРѕРјР°
 #include <random>
 #include <ctime>
 std::mt19937 randon_engine;
 std::condition_variable condition;
 std::mutex m_mut;
 
-//Эту дичь пихать только в методы
+//Р­С‚Сѓ РґРёС‡СЊ РїРёС…Р°С‚СЊ С‚РѕР»СЊРєРѕ РІ РјРµС‚РѕРґС‹
 #define THREAD_LOCK std::lock_guard<std::mutex> lg(m_mut);
 #define NOTIFY_ALL_THREAD condition.notify_all();
 
@@ -28,7 +28,7 @@ semaphor_manager* semaphor_manager::manager_ptr = 0;
 singlet_destroyer semaphor_manager::dstr;
 
 /*/
-/Класс, гарантирующий удаление после выхода из проги
+/РљР»Р°СЃСЃ, РіР°СЂР°РЅС‚РёСЂСѓСЋС‰РёР№ СѓРґР°Р»РµРЅРёРµ РїРѕСЃР»Рµ РІС‹С…РѕРґР° РёР· РїСЂРѕРіРё
 /*/
 singlet_destroyer::~singlet_destroyer()
 {
@@ -41,8 +41,8 @@ void singlet_destroyer::initialize(semaphor_manager* ptr)
 }
 
 /*/
-/Базовый конструктор
-/Инициализирует элементы по указателям и сбрасывает счетчик обслуживаемых светофоров
+/Р‘Р°Р·РѕРІС‹Р№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+/РРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ СЌР»РµРјРµРЅС‚С‹ РїРѕ СѓРєР°Р·Р°С‚РµР»СЏРј Рё СЃР±СЂР°СЃС‹РІР°РµС‚ СЃС‡РµС‚С‡РёРє РѕР±СЃР»СѓР¶РёРІР°РµРјС‹С… СЃРІРµС‚РѕС„РѕСЂРѕРІ
 /*/
 semaphor_manager::semaphor_manager()
 {
@@ -54,7 +54,7 @@ semaphor_manager::semaphor_manager()
 	//queue_list = new std::vector<std::pair<uint16_t, uint16_t>>;
 	queue_list = new std::map<uint16_t, uint16_t>;
 	semaphor_map = new std::map<uint16_t, boost::container::vector<uint16_t>>;
-	//transit_order = new std::vector<std::pair<uint8_t, uint8_t>>; // --> std::map, только красивее
+	//transit_order = new std::vector<std::pair<uint8_t, uint8_t>>; // --> std::map, С‚РѕР»СЊРєРѕ РєСЂР°СЃРёРІРµРµ
 	polling_graph = new boost::container::vector<std::pair<uint8_t, uint8_t>>;
 	generator_mode = 0;
 	semaphors_cnt = 0;
@@ -66,7 +66,7 @@ semaphor_manager::semaphor_manager()
 	stop_thread = 0;
 	queue_delay = 1;
 }
-//Пустой деструктор
+//РџСѓСЃС‚РѕР№ РґРµСЃС‚СЂСѓРєС‚РѕСЂ
 semaphor_manager::~semaphor_manager()
 {}
 semaphor_manager& semaphor_manager::getInstance()
@@ -79,10 +79,10 @@ semaphor_manager& semaphor_manager::getInstance()
 	return *manager_ptr;
 }
 /*/
-/Метод добавляет указанный светофор в список обслуживаемых
-/Таким образом можно исключить обслуживание ненужных светофоров
-/То есть например массив светофором на другом перекрестке не
-/Входит в список на нашем перекрестке, поэтому не трогаем их
+/РњРµС‚РѕРґ РґРѕР±Р°РІР»СЏРµС‚ СѓРєР°Р·Р°РЅРЅС‹Р№ СЃРІРµС‚РѕС„РѕСЂ РІ СЃРїРёСЃРѕРє РѕР±СЃР»СѓР¶РёРІР°РµРјС‹С…
+/РўР°РєРёРј РѕР±СЂР°Р·РѕРј РјРѕР¶РЅРѕ РёСЃРєР»СЋС‡РёС‚СЊ РѕР±СЃР»СѓР¶РёРІР°РЅРёРµ РЅРµРЅСѓР¶РЅС‹С… СЃРІРµС‚РѕС„РѕСЂРѕРІ
+/РўРѕ РµСЃС‚СЊ РЅР°РїСЂРёРјРµСЂ РјР°СЃСЃРёРІ СЃРІРµС‚РѕС„РѕСЂРѕРј РЅР° РґСЂСѓРіРѕРј РїРµСЂРµРєСЂРµСЃС‚РєРµ РЅРµ
+/Р’С…РѕРґРёС‚ РІ СЃРїРёСЃРѕРє РЅР° РЅР°С€РµРј РїРµСЂРµРєСЂРµСЃС‚РєРµ, РїРѕСЌС‚РѕРјСѓ РЅРµ С‚СЂРѕРіР°РµРј РёС…
 /*/
 void semaphor_manager::add_semaphor(uint16_t sem_id)
 {
@@ -92,44 +92,44 @@ void semaphor_manager::add_semaphor(uint16_t sem_id)
 	semaphor_gui::getInstance().slot_post_console_msg("[LOG] New semaphor with id = " + sem_id);
 	qDebug() << "[LOG] New semaphor with id =" << sem_id;
 	s_id->push_back(sem_id);
-	reg_s_state->push_back(0x00);	//Состояние светофора неизвестно, оставим 0, то есть светофор ещё ни разу не читался
+	reg_s_state->push_back(0x00);	//РЎРѕСЃС‚РѕСЏРЅРёРµ СЃРІРµС‚РѕС„РѕСЂР° РЅРµРёР·РІРµСЃС‚РЅРѕ, РѕСЃС‚Р°РІРёРј 0, С‚Рѕ РµСЃС‚СЊ СЃРІРµС‚РѕС„РѕСЂ РµС‰С‘ РЅРё СЂР°Р·Сѓ РЅРµ С‡РёС‚Р°Р»СЃСЏ
 	++semaphors_cnt;
-	//reg_s_state->resize(semaphors_cnt); //оставляет мусор
+	//reg_s_state->resize(semaphors_cnt); //РѕСЃС‚Р°РІР»СЏРµС‚ РјСѓСЃРѕСЂ
 	//m_mut.unlock();
 	//condition.notify_all();
 	//ul.unlock();
 }
 
 /*/
-/Сохраняет состояние светофора у себя. Светофор может после этого сразу поменять своё состояние
-/Но менеджер будет хранить старое состояние до востребования нового
+/РЎРѕС…СЂР°РЅСЏРµС‚ СЃРѕСЃС‚РѕСЏРЅРёРµ СЃРІРµС‚РѕС„РѕСЂР° Сѓ СЃРµР±СЏ. РЎРІРµС‚РѕС„РѕСЂ РјРѕР¶РµС‚ РїРѕСЃР»Рµ СЌС‚РѕРіРѕ СЃСЂР°Р·Сѓ РїРѕРјРµРЅСЏС‚СЊ СЃРІРѕС‘ СЃРѕСЃС‚РѕСЏРЅРёРµ
+/РќРѕ РјРµРЅРµРґР¶РµСЂ Р±СѓРґРµС‚ С…СЂР°РЅРёС‚СЊ СЃС‚Р°СЂРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РґРѕ РІРѕСЃС‚СЂРµР±РѕРІР°РЅРёСЏ РЅРѕРІРѕРіРѕ
 /*/
 void semaphor_manager::load_s_state(uint16_t sem_id, uint8_t s_state)
 {
 	THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
-	//m_mut.lock(); //Велосипедная атомарность
+	//m_mut.lock(); //Р’РµР»РѕСЃРёРїРµРґРЅР°СЏ Р°С‚РѕРјР°СЂРЅРѕСЃС‚СЊ
 	qDebug() << "[LOG] Semaphor id =" << sem_id << ", state =" << s_state;
 	auto it = std::find(s_id->begin(), s_id->end(), sem_id);	//auto == uint16_t
 	if (it == s_id->end())
 	{
 		//m_mut.unlock();
 		NOTIFY_ALL_THREAD
-		return;	//Если ничего такого нет то сразу выходим
+		return;	//Р•СЃР»Рё РЅРёС‡РµРіРѕ С‚Р°РєРѕРіРѕ РЅРµС‚ С‚Рѕ СЃСЂР°Р·Сѓ РІС‹С…РѕРґРёРј
 	}
 	uint16_t index = std::distance(s_id->begin(), it);
 
-	reg_s_state->at(index) = s_state;	//Сохраняем состояние, которое передал светофор
+	reg_s_state->at(index) = s_state;	//РЎРѕС…СЂР°РЅСЏРµРј СЃРѕСЃС‚РѕСЏРЅРёРµ, РєРѕС‚РѕСЂРѕРµ РїРµСЂРµРґР°Р» СЃРІРµС‚РѕС„РѕСЂ
 
 	/*auto match = *s_id | std::views::filter([&sem_id](auto& v) {
 		return v == sem_id;
-		});*/	//Тут дальше как-то надо, не сообразил - C++20 фича, освою в ближайшее время
+		});*/	//РўСѓС‚ РґР°Р»СЊС€Рµ РєР°Рє-С‚Рѕ РЅР°РґРѕ, РЅРµ СЃРѕРѕР±СЂР°Р·РёР» - C++20 С„РёС‡Р°, РѕСЃРІРѕСЋ РІ Р±Р»РёР¶Р°Р№С€РµРµ РІСЂРµРјСЏ
 	/*uint16_t s_index = 0;
 	for (uint16_t a = 0; a < static_cast<uint16_t>(s_id->size()); ++a)
 	{
 		if (s_id[a]==sem_id)
 		{
-			//Не работает с инициализированными по указателю векторами
+			//РќРµ СЂР°Р±РѕС‚Р°РµС‚ СЃ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅРЅС‹РјРё РїРѕ СѓРєР°Р·Р°С‚РµР»СЋ РІРµРєС‚РѕСЂР°РјРё
 		}
 	}*/
 
@@ -139,7 +139,7 @@ void semaphor_manager::load_s_state(uint16_t sem_id, uint8_t s_state)
 }
 
 /*/
-/Вывод на консоль состояния всех светофоров, для дебага
+/Р’С‹РІРѕРґ РЅР° РєРѕРЅСЃРѕР»СЊ СЃРѕСЃС‚РѕСЏРЅРёСЏ РІСЃРµС… СЃРІРµС‚РѕС„РѕСЂРѕРІ, РґР»СЏ РґРµР±Р°РіР°
 /*/
 void semaphor_manager::print_sem_list()
 {
@@ -151,27 +151,27 @@ void semaphor_manager::print_sem_list()
 }
 
 /*/
-/Возврат последнего записанного в собственную базу состояния светофора
+/Р’РѕР·РІСЂР°С‚ РїРѕСЃР»РµРґРЅРµРіРѕ Р·Р°РїРёСЃР°РЅРЅРѕРіРѕ РІ СЃРѕР±СЃС‚РІРµРЅРЅСѓСЋ Р±Р°Р·Сѓ СЃРѕСЃС‚РѕСЏРЅРёСЏ СЃРІРµС‚РѕС„РѕСЂР°
 /*/
 uint8_t semaphor_manager::read_s_state(uint16_t sem_id)
 {
 	THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
-	//m_mut.lock();	//Типа атомарность всё такое
+	//m_mut.lock();	//РўРёРїР° Р°С‚РѕРјР°СЂРЅРѕСЃС‚СЊ РІСЃС‘ С‚Р°РєРѕРµ
 	auto it = std::find(s_id->begin(), s_id->end(), sem_id);	//auto == uint16_t
 	if (it == s_id->end())
 	{
 		//m_mut.unlock();
 		NOTIFY_ALL_THREAD
 		//ul.unlock();
-		return 0;	//Если ничего такого нет то сразу выходим
+		return 0;	//Р•СЃР»Рё РЅРёС‡РµРіРѕ С‚Р°РєРѕРіРѕ РЅРµС‚ С‚Рѕ СЃСЂР°Р·Сѓ РІС‹С…РѕРґРёРј
 	}
 	uint16_t index = std::distance(s_id->begin(), it);
 
 	//m_mut.unlock();
 	NOTIFY_ALL_THREAD
 	//ul.unlock();
-	return reg_s_state->at(index);	//Сохраняем состояние, которое передал светофор
+	return reg_s_state->at(index);	//РЎРѕС…СЂР°РЅСЏРµРј СЃРѕСЃС‚РѕСЏРЅРёРµ, РєРѕС‚РѕСЂРѕРµ РїРµСЂРµРґР°Р» СЃРІРµС‚РѕС„РѕСЂ
 }
 
 void semaphor_manager::create_semaphor()
@@ -187,8 +187,8 @@ void semaphor_manager::create_semaphor()
 	s_list[semaphors_cnt - 1]->new_thread(semaphors_cnt-1);
 }
 
-//Управление потоком машин
-//Запрет или разрешение
+//РЈРїСЂР°РІР»РµРЅРёРµ РїРѕС‚РѕРєРѕРј РјР°С€РёРЅ
+//Р—Р°РїСЂРµС‚ РёР»Рё СЂР°Р·СЂРµС€РµРЅРёРµ
 void semaphor_manager::allowTransit(uint16_t sem_id)
 {
 	//std::lock_guard<std::mutex> lg(m_mut);
@@ -248,7 +248,7 @@ void semaphor_manager::set_neighbour(uint16_t target_sem, boost::container::vect
 	}
 }
 
-//Запрашиваем состояние у светофора и возвращаем ответ
+//Р—Р°РїСЂР°С€РёРІР°РµРј СЃРѕСЃС‚РѕСЏРЅРёРµ Сѓ СЃРІРµС‚РѕС„РѕСЂР° Рё РІРѕР·РІСЂР°С‰Р°РµРј РѕС‚РІРµС‚
 uint8_t semaphor_manager::get_neighbour_state(uint16_t n_id)
 {
 	return s_list[n_id]->get_reg_state();
@@ -311,7 +311,7 @@ void semaphor_manager::queueManager()
 			break;
 		}
 		//qDebug() << "[QUEUE]Cycle" << cycle_cnt;
-		//Таймер запроса состояния всех подконтрольных светофоров
+		//РўР°Р№РјРµСЂ Р·Р°РїСЂРѕСЃР° СЃРѕСЃС‚РѕСЏРЅРёСЏ РІСЃРµС… РїРѕРґРєРѕРЅС‚СЂРѕР»СЊРЅС‹С… СЃРІРµС‚РѕС„РѕСЂРѕРІ
 
 		if (cycle_cnt == manager_cycle)
 		{
@@ -344,10 +344,10 @@ void semaphor_manager::calc_transit_priority()
 		if (s_count == 0)
 			break;
 		//qDebug() << "[MANAGER]Calc cycle" << QString::number(s_count);
-		it = std::max_element(_s_queue.begin(), _s_queue.end());	//Получаем указатель на элемент с максимальным размером
+		it = std::max_element(_s_queue.begin(), _s_queue.end());	//РџРѕР»СѓС‡Р°РµРј СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЌР»РµРјРµРЅС‚ СЃ РјР°РєСЃРёРјР°Р»СЊРЅС‹Рј СЂР°Р·РјРµСЂРѕРј
 		//qDebug() << "[MANAGER]Max element find =" << QString::number(_s_queue.at(static_cast<uint8_t>(std::distance(_s_queue.begin(), it))));
 
-		//Записываем в карту с привязкой к ID светофора
+		//Р—Р°РїРёСЃС‹РІР°РµРј РІ РєР°СЂС‚Сѓ СЃ РїСЂРёРІСЏР·РєРѕР№ Рє ID СЃРІРµС‚РѕС„РѕСЂР°
 		/*queue_list->push_back(
 			std::pair<uint16_t, uint16_t>(static_cast<uint16_t>(s_id->size()) - s_count,
 			_s_id.at(static_cast<uint8_t>(std::distance(_s_queue.begin(), it))))
@@ -356,14 +356,14 @@ void semaphor_manager::calc_transit_priority()
 			std::pair<uint16_t, uint16_t>(static_cast<uint16_t>(s_id->size())-s_count, 
 			_s_id.at(static_cast<uint8_t>(std::distance(_s_queue.begin(), it))))
 		);
-		_s_queue[s_id->at(static_cast<int>(std::distance(_s_queue.begin(), it)))] = 0;	//Затираем значение чтобы не попадалось повторно
+		_s_queue[s_id->at(static_cast<int>(std::distance(_s_queue.begin(), it)))] = 0;	//Р—Р°С‚РёСЂР°РµРј Р·РЅР°С‡РµРЅРёРµ С‡С‚РѕР±С‹ РЅРµ РїРѕРїР°РґР°Р»РѕСЃСЊ РїРѕРІС‚РѕСЂРЅРѕ
 		--s_count;
 	}
 	qDebug() << "[MANAGER]Print ordered list";
 	qDebug() << " _____________________________________________________________________________";
 	for (auto it_map = queue_list->cbegin(); it_map != queue_list->cend(); ++it_map)
 	{
-		if (it_map->first == 0)	//Поиск принадлежности светофора с высшим приоритетом к соотв. зоне
+		if (it_map->first == 0)	//РџРѕРёСЃРє РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё СЃРІРµС‚РѕС„РѕСЂР° СЃ РІС‹СЃС€РёРј РїСЂРёРѕСЂРёС‚РµС‚РѕРј Рє СЃРѕРѕС‚РІ. Р·РѕРЅРµ
 			for (auto _it = semaphor_map->cbegin(); _it != semaphor_map->cend(); ++_it)
 				for (uint8_t m_cnt = 0; m_cnt < _it->second.size(); ++m_cnt)
 					if (it_map->second == _it->second[m_cnt])
@@ -377,7 +377,7 @@ void semaphor_manager::calc_transit_priority()
 		logout += "| Priority = " + QString::number(it_map->first).leftJustified(2, ' ')
 			+ " | ID = " + QString::number(it_map->second).leftJustified(2, ' ')
 			+ " | queue size = " + QString::number(s_queue.at(it_map->second)).leftJustified(2, ' ')
-			+ " | zone ";	//Здесь надо было вкорячить лямбду но тот вариант который я нашёл роняет вижлу на дебаге
+			+ " | zone ";	//Р—РґРµСЃСЊ РЅР°РґРѕ Р±С‹Р»Рѕ РІРєРѕСЂСЏС‡РёС‚СЊ Р»СЏРјР±РґСѓ РЅРѕ С‚РѕС‚ РІР°СЂРёР°РЅС‚ РєРѕС‚РѕСЂС‹Р№ СЏ РЅР°С€С‘Р» СЂРѕРЅСЏРµС‚ РІРёР¶Р»Сѓ РЅР° РґРµР±Р°РіРµ
 		//semaphor_gui::getInstance().slot_post_console_msg("[MANAGER]Max queue size = " + QString::number(s_queue.at(it_map->second)).leftJustified(2, ' '));
 		for (uint8_t z_lst_it = 0; z_lst_it < zone_list->size(); ++z_lst_it)
 		{
@@ -404,14 +404,14 @@ void semaphor_manager::calc_transit_priority()
 	}
 	//semaphor_gui::getInstance().slot_post_console_msg("[LOG]Stored zone list num" + QString::number(n_zone).leftJustified(2, ' '));
 	qDebug() << "[LOG]Stored zone list num" << QString::number(n_zone).leftJustified(2, ' ');
-	//queue_list->clear();	//Не сюда
+	//queue_list->clear();	//РќРµ СЃСЋРґР°
 }
 
 uint8_t semaphor_manager::semaphor_request(uint16_t sem_id, uint8_t code)
 {
 	//THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
-	//m_mut.lock();	//Типа атомарность всё такое
+	//m_mut.lock();	//РўРёРїР° Р°С‚РѕРјР°СЂРЅРѕСЃС‚СЊ РІСЃС‘ С‚Р°РєРѕРµ
 	uint8_t response_code = 0x00;
 	auto it = std::find(s_id->begin(), s_id->end(), sem_id);	//auto == uint16_t
 	if (it == s_id->end())
@@ -419,7 +419,7 @@ uint8_t semaphor_manager::semaphor_request(uint16_t sem_id, uint8_t code)
 		//m_mut.unlock();
 		//NOTIFY_ALL_THREAD
 		//ul.unlock();
-		return 0;	//Если ничего такого нет то сразу выходим
+		return 0;	//Р•СЃР»Рё РЅРёС‡РµРіРѕ С‚Р°РєРѕРіРѕ РЅРµС‚ С‚Рѕ СЃСЂР°Р·Сѓ РІС‹С…РѕРґРёРј
 	}
 	THREAD_LOCK
 	uint16_t index = std::distance(s_id->begin(), it);
@@ -449,20 +449,20 @@ void semaphor_manager::semaphor_request(uint8_t code)
 	//ul.unlock();
 }
 
-//Сохраняет счетчик очереди светофора, вызвавшего этот метод
+//РЎРѕС…СЂР°РЅСЏРµС‚ СЃС‡РµС‚С‡РёРє РѕС‡РµСЂРµРґРё СЃРІРµС‚РѕС„РѕСЂР°, РІС‹Р·РІР°РІС€РµРіРѕ СЌС‚РѕС‚ РјРµС‚РѕРґ
 void semaphor_manager::load_s_queue(uint16_t sem_id, uint16_t queue_size)
 {
 	//qDebug() << "[MANAGER]Semaphor id =" << QString::number(sem_id) << " queue size =" << QString::number(queue_size);
 	//THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
-	//m_mut.lock();	//Типа атомарность всё такое
+	//m_mut.lock();	//РўРёРїР° Р°С‚РѕРјР°СЂРЅРѕСЃС‚СЊ РІСЃС‘ С‚Р°РєРѕРµ
 	auto it = std::find(s_id->begin(), s_id->end(), sem_id);	//auto == uint16_t
 	if (it == s_id->end())
 	{
 		//m_mut.unlock();
 		//NOTIFY_ALL_THREAD
 		//ul.unlock();
-		return;	//Если ничего такого нет то сразу выходим
+		return;	//Р•СЃР»Рё РЅРёС‡РµРіРѕ С‚Р°РєРѕРіРѕ РЅРµС‚ С‚Рѕ СЃСЂР°Р·Сѓ РІС‹С…РѕРґРёРј
 	}
 	THREAD_LOCK
 	uint16_t index = std::distance(s_id->begin(), it);
@@ -486,7 +486,7 @@ bool semaphor_manager::send_command_to_target_semaphor(uint16_t sem_id, uint8_t 
 		//m_mut.unlock();
 		//NOTIFY_ALL_THREAD
 		//ul.unlock();
-		return 0;	//Если ничего такого нет то сразу выходим
+		return 0;	//Р•СЃР»Рё РЅРёС‡РµРіРѕ С‚Р°РєРѕРіРѕ РЅРµС‚ С‚Рѕ СЃСЂР°Р·Сѓ РІС‹С…РѕРґРёРј
 	}
 	THREAD_LOCK
 	uint16_t index = std::distance(s_id->begin(), it);
@@ -509,7 +509,7 @@ void semaphor_manager::set_semaphor_name(uint16_t sem_id, std::string name)
 		//m_mut.unlock();
 		//NOTIFY_ALL_THREAD
 		//ul.unlock();
-		return;	//Если ничего такого нет то сразу выходим
+		return;	//Р•СЃР»Рё РЅРёС‡РµРіРѕ С‚Р°РєРѕРіРѕ РЅРµС‚ С‚Рѕ СЃСЂР°Р·Сѓ РІС‹С…РѕРґРёРј
 	}
 	THREAD_LOCK
 	uint16_t index = std::distance(s_id->begin(), it);
@@ -612,7 +612,7 @@ void semaphor_manager::copy_polling_graph(uint16_t sem_id)
 		//m_mut.unlock();
 		NOTIFY_ALL_THREAD
 		//ul.unlock();
-		return;	//Если ничего такого нет то сразу выходим
+		return;	//Р•СЃР»Рё РЅРёС‡РµРіРѕ С‚Р°РєРѕРіРѕ РЅРµС‚ С‚Рѕ СЃСЂР°Р·Сѓ РІС‹С…РѕРґРёРј
 	}
 	uint16_t index = std::distance(s_id->begin(), it);
 

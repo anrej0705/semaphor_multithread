@@ -6,7 +6,7 @@
 std::condition_variable condition_gui;
 std::mutex m_mut_gui;
 
-//Эту дичь пихать только в методы
+//Р­С‚Сѓ РґРёС‡СЊ РїРёС…Р°С‚СЊ С‚РѕР»СЊРєРѕ РІ РјРµС‚РѕРґС‹
 #define THREAD_LOCK std::lock_guard<std::mutex> lg_gui(m_mut_gui);
 #define NOTIFY_ALL_THREAD condition_gui.notify_all();
 
@@ -14,7 +14,7 @@ semaphor_gui* semaphor_gui::s_slot_ptr = 0;
 singlet_destroyer2 semaphor_gui::dstr;
 
 /*/
-/Класс, гарантирующий удаление после выхода из проги
+/РљР»Р°СЃСЃ, РіР°СЂР°РЅС‚РёСЂСѓСЋС‰РёР№ СѓРґР°Р»РµРЅРёРµ РїРѕСЃР»Рµ РІС‹С…РѕРґР° РёР· РїСЂРѕРіРё
 /*/
 singlet_destroyer2::~singlet_destroyer2()
 {
@@ -27,13 +27,13 @@ void singlet_destroyer2::initialize(semaphor_gui* ptr)
 }
 
 /*
-* Конструктор
+* РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 * 
-* Настройка интерфейса и инициализация переменных
+* РќР°СЃС‚СЂРѕР№РєР° РёРЅС‚РµСЂС„РµР№СЃР° Рё РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРµСЂРµРјРµРЅРЅС‹С…
 */
 semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 {
-	//Инициализации
+	//РРЅРёС†РёР°Р»РёР·Р°С†РёРё
 	background_img = new QLabel;
 	hLay = new QHBoxLayout;
 	background_pxmap = new QPixmap("cross.png");
@@ -63,7 +63,7 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	semaphor_slots = new boost::container::vector<semaphor_slot*>;
 	//semaphor_graphic_arr = new boost::container::vector<semaphor_graphic*>;
 
-	//Настройка модуля генератора
+	//РќР°СЃС‚СЂРѕР№РєР° РјРѕРґСѓР»СЏ РіРµРЅРµСЂР°С‚РѕСЂР°
 	gen_rate_slider->setRange(1, 166);
 	gen_rate_slider->setTickInterval(4);
 	gen_rate_slider->setValue(25);
@@ -99,7 +99,7 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	generator_lay->addLayout(state_machine_lay);
 	generator_mode->start();
 
-	//Подключаем машину состояний к слотам управления генератором
+	//РџРѕРґРєР»СЋС‡Р°РµРј РјР°С€РёРЅСѓ СЃРѕСЃС‚РѕСЏРЅРёР№ Рє СЃР»РѕС‚Р°Рј СѓРїСЂР°РІР»РµРЅРёСЏ РіРµРЅРµСЂР°С‚РѕСЂРѕРј
 	if (!QObject::connect(gen_rate_slider, SIGNAL(valueChanged(int)), slider_indicator, SLOT(setNum(int))))
 		QErrorMessage::qtHandler();
 	if (!QObject::connect(gen_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(set_generator_frequency(int))))
@@ -109,7 +109,7 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	if (!QObject::connect(mode_en, &QState::exited, this, &semaphor_gui::switch_generator_mode))
 		QErrorMessage::qtHandler();
 
-	//Настройка панели со слотами-светофорами
+	//РќР°СЃС‚СЂРѕР№РєР° РїР°РЅРµР»Рё СЃРѕ СЃР»РѕС‚Р°РјРё-СЃРІРµС‚РѕС„РѕСЂР°РјРё
 	slots_module = new QGroupBox(tr("Semaphors"));
 	slots_module_lay = new QHBoxLayout;
 
@@ -123,14 +123,14 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	slots_module->setLayout(slots_module_lay);
 	slots_module->setFixedHeight(400);
 
-	//Настройка консоли
+	//РќР°СЃС‚СЂРѕР№РєР° РєРѕРЅСЃРѕР»Рё
 	console_box = new QGroupBox(tr("Console"));
 	console_box_lay = new QVBoxLayout;
 	console = new QTextEdit;
 	console->setReadOnly(1);
 	console_box_lay->addWidget(console);
 
-	//Настройка табляцы
+	//РќР°СЃС‚СЂРѕР№РєР° С‚Р°Р±Р»СЏС†С‹
 	table_box = new QGroupBox(tr("Manager info"));
 	table_box_lay = new QVBoxLayout;
 	table = new QStandardItemModel(12, 5);
@@ -149,17 +149,17 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	table_box_lay->addWidget(table_view);
 	table_box->setLayout(table_box_lay);
 
-	//Компоновка таблицы и консоли
+	//РљРѕРјРїРѕРЅРѕРІРєР° С‚Р°Р±Р»РёС†С‹ Рё РєРѕРЅСЃРѕР»Рё
 	console_box->setLayout(console_box_lay);
 	console_lay->addWidget(table_box);
 	console_lay->addWidget(console_box);
 
-	//Финальная компоновка
+	//Р¤РёРЅР°Р»СЊРЅР°СЏ РєРѕРјРїРѕРЅРѕРІРєР°
 	control_lay->addWidget(generator_module);
 	control_lay->addWidget(slots_module);
 	control_lay->addLayout(console_lay);
 
-	//Настройка панели управления
+	//РќР°СЃС‚СЂРѕР№РєР° РїР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ
 	control_panel->setLayout(control_lay);
 	//control_panel->resize(768, 768);
 
@@ -254,7 +254,7 @@ void semaphor_gui::gui()
 
 void semaphor_gui::set_signal(uint16_t sem_id, bool signal)
 {
-	//Упрощенная реализация. В более сложной модели потребуется замена вектора на карту либо вектор + std::pair
+	//РЈРїСЂРѕС‰РµРЅРЅР°СЏ СЂРµР°Р»РёР·Р°С†РёСЏ. Р’ Р±РѕР»РµРµ СЃР»РѕР¶РЅРѕР№ РјРѕРґРµР»Рё РїРѕС‚СЂРµР±СѓРµС‚СЃСЏ Р·Р°РјРµРЅР° РІРµРєС‚РѕСЂР° РЅР° РєР°СЂС‚Сѓ Р»РёР±Рѕ РІРµРєС‚РѕСЂ + std::pair
 	//THREAD_LOCK
 	semaphor_slots->at(sem_id)->slot_set_signal(signal);
 	QMetaObject::invokeMethod(s_graph[sem_id], [=]() {
@@ -479,19 +479,19 @@ void semaphor_graphic::paintEvent(QPaintEvent* event)
 
 	if (!paint_g)
 	{
-		//Рисуем корпус светофора
+		//Р РёСЃСѓРµРј РєРѕСЂРїСѓСЃ СЃРІРµС‚РѕС„РѕСЂР°
 		painter.setBrush(QBrush(QColor(63, 63, 63)));
 		painter.setPen(QPen(QColor(0, 0, 0)));
 		painter.drawRect(rect());
 		paint_g = 1;
 	}
 
-	//Установка состояния для красного
+	//РЈСЃС‚Р°РЅРѕРІРєР° СЃРѕСЃС‚РѕСЏРЅРёСЏ РґР»СЏ РєСЂР°СЃРЅРѕРіРѕ
 	myState ? painter.setBrush(QBrush(QColor(63, 0, 0))) : painter.setBrush(QBrush(QColor(255, 0, 0)));
 	painter.setPen(QPen(QColor(0, 0, 0)));
 	painter.drawEllipse(rect().width() / 4, rect().height() / 8, 24, 24);
 
-	//Установка состосния для зелёного
+	//РЈСЃС‚Р°РЅРѕРІРєР° СЃРѕСЃС‚РѕСЃРЅРёСЏ РґР»СЏ Р·РµР»С‘РЅРѕРіРѕ
 	myState ? painter.setBrush(QBrush(QColor(0, 255, 0))) : painter.setBrush(QBrush(QColor(0, 63, 0)));
 	painter.setPen(QPen(QColor(0, 0, 0)));
 	painter.drawEllipse(rect().width() / 4, rect().height() / 2, 24, 24);

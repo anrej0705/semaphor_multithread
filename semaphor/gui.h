@@ -24,7 +24,7 @@ class semaphor_gui : public QWidget
 
 		QLabel* background_img;
 		QPixmap* background_pxmap;
-		QHBoxLayout* hLay; //компоновка панели с картинкой и панели управления
+		QHBoxLayout* hLay; //РєРѕРјРїРѕРЅРѕРІРєР° РїР°РЅРµР»Рё СЃ РєР°СЂС‚РёРЅРєРѕР№ Рё РїР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ
 
 		bool thread_stop;
 		bool gen_mode;
@@ -32,26 +32,26 @@ class semaphor_gui : public QWidget
 		uint16_t slot_cnt;
 		uint16_t s_g_cnt;
 		
-		//Панель элементов управления
-		QWidget* control_panel;	//Панель управления
-		QVBoxLayout* control_lay; //Компоновка модулей панели управления
+		//РџР°РЅРµР»СЊ СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ
+		QWidget* control_panel;	//РџР°РЅРµР»СЊ СѓРїСЂР°РІР»РµРЅРёСЏ
+		QVBoxLayout* control_lay; //РљРѕРјРїРѕРЅРѕРІРєР° РјРѕРґСѓР»РµР№ РїР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ
 
-		//Компоновка панели модуля генератора
-		QGroupBox* generator_module;	//Виджет генератора
-		QHBoxLayout* state_machine_lay;	//Компоновка элементов генератора
-		QHBoxLayout* slider_lay;		//Слайдер
-		QVBoxLayout* generator_lay;		//Генератора
-		QPushButton* mode_switcher;	//Переключатель состояния
-		QSlider* gen_rate_slider;	//Ползунок регулировки скорости генерации
-		QStateMachine* generator_mode;	//Машина состояний
-		QState* mode_en;	//Состояние работы
-		QState* mode_dis;	//Состояние простоя
-		QLabel* lbl_en;		//Надпись вкл
-		QLabel* lbl_dis;	//Надпись выкл
-		QLabel* slider_indicator;	//Индикатор со слайдера
-		QLabel* lbl_frequency;	//"Частота генерации"
+		//РљРѕРјРїРѕРЅРѕРІРєР° РїР°РЅРµР»Рё РјРѕРґСѓР»СЏ РіРµРЅРµСЂР°С‚РѕСЂР°
+		QGroupBox* generator_module;	//Р’РёРґР¶РµС‚ РіРµРЅРµСЂР°С‚РѕСЂР°
+		QHBoxLayout* state_machine_lay;	//РљРѕРјРїРѕРЅРѕРІРєР° СЌР»РµРјРµРЅС‚РѕРІ РіРµРЅРµСЂР°С‚РѕСЂР°
+		QHBoxLayout* slider_lay;		//РЎР»Р°Р№РґРµСЂ
+		QVBoxLayout* generator_lay;		//Р“РµРЅРµСЂР°С‚РѕСЂР°
+		QPushButton* mode_switcher;	//РџРµСЂРµРєР»СЋС‡Р°С‚РµР»СЊ СЃРѕСЃС‚РѕСЏРЅРёСЏ
+		QSlider* gen_rate_slider;	//РџРѕР»Р·СѓРЅРѕРє СЂРµРіСѓР»РёСЂРѕРІРєРё СЃРєРѕСЂРѕСЃС‚Рё РіРµРЅРµСЂР°С†РёРё
+		QStateMachine* generator_mode;	//РњР°С€РёРЅР° СЃРѕСЃС‚РѕСЏРЅРёР№
+		QState* mode_en;	//РЎРѕСЃС‚РѕСЏРЅРёРµ СЂР°Р±РѕС‚С‹
+		QState* mode_dis;	//РЎРѕСЃС‚РѕСЏРЅРёРµ РїСЂРѕСЃС‚РѕСЏ
+		QLabel* lbl_en;		//РќР°РґРїРёСЃСЊ РІРєР»
+		QLabel* lbl_dis;	//РќР°РґРїРёСЃСЊ РІС‹РєР»
+		QLabel* slider_indicator;	//РРЅРґРёРєР°С‚РѕСЂ СЃРѕ СЃР»Р°Р№РґРµСЂР°
+		QLabel* lbl_frequency;	//"Р§Р°СЃС‚РѕС‚Р° РіРµРЅРµСЂР°С†РёРё"
 
-		//Панель со слотами-светофорами
+		//РџР°РЅРµР»СЊ СЃРѕ СЃР»РѕС‚Р°РјРё-СЃРІРµС‚РѕС„РѕСЂР°РјРё
 		QGroupBox* slots_module;
 		QHBoxLayout* slots_module_lay;
 
@@ -62,8 +62,8 @@ class semaphor_gui : public QWidget
 		semaphor_graphic* s_graph[12];
 		boost::thread* gui_thread;
 
-		//Таблица и консоль
-		QHBoxLayout* console_lay; //Компоновка таблицы MV и консоли
+		//РўР°Р±Р»РёС†Р° Рё РєРѕРЅСЃРѕР»СЊ
+		QHBoxLayout* console_lay; //РљРѕРјРїРѕРЅРѕРІРєР° С‚Р°Р±Р»РёС†С‹ MV Рё РєРѕРЅСЃРѕР»Рё
 		QGroupBox* console_box;
 		QGroupBox* table_box;
 		QVBoxLayout* console_box_lay;
@@ -102,22 +102,22 @@ class semaphor_slot : public QGroupBox
 	private:
 		QPalette s_color_status;
 
-		QVBoxLayout* slot_module;	//Компоновщик элементов
+		QVBoxLayout* slot_module;	//РљРѕРјРїРѕРЅРѕРІС‰РёРє СЌР»РµРјРµРЅС‚РѕРІ
 		
 		QVBoxLayout* id_box_layout;
 		QVBoxLayout* queue_box_layout;
 		QVBoxLayout* color_box_layout;
 
-		QLabel* id;		//ИД светофора
-		QLabel* queue;	//Счетчик очереди
-		QLabel* color;	//Цвет(сигнал)
+		QLabel* id;		//РР” СЃРІРµС‚РѕС„РѕСЂР°
+		QLabel* queue;	//РЎС‡РµС‚С‡РёРє РѕС‡РµСЂРµРґРё
+		QLabel* color;	//Р¦РІРµС‚(СЃРёРіРЅР°Р»)
 
 		QGroupBox* id_box;
 		QGroupBox* queue_box;
 		QGroupBox* color_box;
 
-		QPushButton* btn_increment;	//Добавить очередь +1
-		QPushButton* btn_decrement;	//Убавить очередь -1
+		QPushButton* btn_increment;	//Р”РѕР±Р°РІРёС‚СЊ РѕС‡РµСЂРµРґСЊ +1
+		QPushButton* btn_decrement;	//РЈР±Р°РІРёС‚СЊ РѕС‡РµСЂРµРґСЊ -1
 	public:
 		uint16_t myId;
 

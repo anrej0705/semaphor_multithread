@@ -308,7 +308,7 @@ void semaphor_gui::closeEvent(QCloseEvent* ce)
 void semaphor_gui::set_generator_frequency(int frequency)
 {
 	//slot_post_console_msg("[GUI]Set generator frequency " + QString::number(frequency));
-	qDebug() << "[GUI]Set frequency" << QString::number(frequency);
+	//qDebug() << "[GUI]Set frequency" << QString::number(frequency);
 	semaphor_manager::getInstance().set_gen_freq(frequency);
 }
 
@@ -441,7 +441,7 @@ void semaphor_slot::slot_set_queue(uint16_t queue_cnt)
 		if (check.toInt() != queue_cnt)
 		{
 			semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[GUI PANEL ID") + QString::number(myId) + QObject::tr("]Error"));
-			qDebug() << "[GUI PANEL ID" << QString::number(myId) << "]Error";
+			//qDebug() << "[GUI PANEL ID" << QString::number(myId) << "]Error";
 		}
 		});
 	//queue->setText(QString::number(queue_cnt));

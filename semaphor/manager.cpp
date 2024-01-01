@@ -90,7 +90,7 @@ void semaphor_manager::add_semaphor(uint16_t sem_id)
 	//std::unique_lock<std::mutex> ul(m_mut);
 	//m_mut.lock();
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG] New semaphor with id = ") + sem_id);
-	qDebug() << "[LOG] New semaphor with id =" << sem_id;
+	//qDebug() << "[LOG] New semaphor with id =" << sem_id;
 	s_id->push_back(sem_id);
 	reg_s_state->push_back(0x00);	//Состояние светофора неизвестно, оставим 0, то есть светофор ещё ни разу не читался
 	++semaphors_cnt;
@@ -109,7 +109,7 @@ void semaphor_manager::load_s_state(uint16_t sem_id, uint8_t s_state)
 	THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
 	//m_mut.lock(); //Велосипедная атомарность
-	qDebug() << "[LOG] Semaphor id =" << sem_id << ", state =" << s_state;
+	//qDebug() << "[LOG] Semaphor id =" << sem_id << ", state =" << s_state;
 	auto it = std::find(s_id->begin(), s_id->end(), sem_id);	//auto == uint16_t
 	if (it == s_id->end())
 	{
@@ -143,10 +143,10 @@ void semaphor_manager::load_s_state(uint16_t sem_id, uint8_t s_state)
 /*/
 void semaphor_manager::print_sem_list()
 {
-	qDebug() << "[LOG] print all semaphore state";
+	//qDebug() << "[LOG] print all semaphore state";
 	for (uint8_t a = 0; a < static_cast<uint8_t>(s_id->size()); ++a)
 	{
-		qDebug() << "[LOG] Semaphore id = " << s_id->at(a) << " state = " << reg_s_state->at(a);
+		//qDebug() << "[LOG] Semaphore id = " << s_id->at(a) << " state = " << reg_s_state->at(a);
 	}
 }
 
@@ -180,7 +180,7 @@ uint8_t semaphor_manager::read_s_state(uint16_t sem_id)
 void semaphor_manager::create_semaphor()
 {
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG]Adding semaphore"));
-	qDebug() << "[LOG]Adding semaphore";
+	//qDebug() << "[LOG]Adding semaphore";
 	++semaphors_cnt;
 	s_list.resize(semaphors_cnt);	//Инициализируемся
 	s_queue.push_back(0);
@@ -227,7 +227,7 @@ void semaphor_manager::addSemaphorQueue(uint16_t sem_id)
 void semaphor_manager::addSemaphorQueue(uint16_t sem_id, uint8_t q_size)
 {
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Set queue size ") + QString::number(q_size));
-	qDebug() << "[LOG] Increment semaphor id =" << sem_id << "queue +=" << q_size;
+	//qDebug() << "[LOG] Increment semaphor id =" << sem_id << "queue +=" << q_size;
 	s_list[sem_id]->queue += q_size;
 }
 
@@ -239,14 +239,14 @@ void semaphor_manager::decrement_semaphor_queue(uint16_t sem_id)
 	if (s_list[sem_id]->queue == 0)	//Если машин нету то выходим сразу
 		return;
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Decrement queue to id ") + QString::number(sem_id) + "(" + QString::number(s_list[sem_id]->queue) + " -> " + QString::number(s_list[sem_id]->queue - 1) + ")");
-	qDebug() << "[LOG]Decrement semaphor id =" << sem_id << "queue +1";
+	//qDebug() << "[LOG]Decrement semaphor id =" << sem_id << "queue +1";
 	s_list[sem_id]->queue--;
 }
 
 void semaphor_manager::increment_semaphor_queue(uint16_t sem_id)
 {
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Increment queue to id ") + QString::number(sem_id) + "(" + QString::number(s_list[sem_id]->queue) + " -> " + QString::number(s_list[sem_id]->queue+1) + ")");
-	qDebug() << "[LOG]Increment semaphor id =" << sem_id << "queue +1";
+	//qDebug() << "[LOG]Increment semaphor id =" << sem_id << "queue +1";
 	s_list[sem_id]->queue++;
 }
 
@@ -284,7 +284,7 @@ void semaphor_manager::run_queue_generator(bool mode)
 //Функция генератора
 void semaphor_manager::queueGenerator()
 {
-	QString logout;
+	//QString logout;
 	uint16_t semaphor_id = 0;
 	uint8_t cycle_cnt = 0;
 	while (1)	//Бесконечный цикл удерживает поток в работе до поднятия флага stop_thread или generator_mode
@@ -368,7 +368,7 @@ void semaphor_manager::calc_transit_priority()
 	boost::container::vector<uint16_t> _s_queue = s_queue;
 	boost::container::vector<uint16_t>::iterator it;
 	int zone_num = 0;
-	QString logout;
+	//QString logout;
 	uint16_t max_size_element = 0;
 	uint16_t s_count = static_cast<uint16_t>(_s_id.size());
 	//qDebug() << "[MANAGER]Calc transit order";
@@ -394,8 +394,8 @@ void semaphor_manager::calc_transit_priority()
 		--s_count;
 	}
 	//Логи бекенда
-	qDebug() << "[MANAGER]Print ordered list";
-	qDebug() << " _____________________________________________________________________________";
+	//qDebug() << "[MANAGER]Print ordered list";
+	//qDebug() << " _____________________________________________________________________________";
 	for (auto it_map = queue_list->cbegin(); it_map != queue_list->cend(); ++it_map)
 	{
 		if (it_map->first == 0)	//Поиск принадлежности светофора с высшим приоритетом к соотв. зоне
@@ -410,10 +410,10 @@ void semaphor_manager::calc_transit_priority()
 		semaphor_gui::getInstance().write_table_content(it_map->first, 0, it_map->first);
 		semaphor_gui::getInstance().write_table_content(it_map->first, 1, it_map->second);
 		semaphor_gui::getInstance().write_table_content(it_map->first, 2, s_queue.at(it_map->second));
-		logout += "| Priority = " + QString::number(it_map->first).leftJustified(2, ' ')
-			+ " | ID = " + QString::number(it_map->second).leftJustified(2, ' ')
-			+ " | queue size = " + QString::number(s_queue.at(it_map->second)).leftJustified(2, ' ')
-			+ " | zone ";	//Здесь надо было вкорячить лямбду но тот вариант который я нашёл роняет вижлу на дебаге
+		//logout += "| Priority = " + QString::number(it_map->first).leftJustified(2, ' ')
+		//	+ " | ID = " + QString::number(it_map->second).leftJustified(2, ' ')
+		//	+ " | queue size = " + QString::number(s_queue.at(it_map->second)).leftJustified(2, ' ')
+		//	+ " | zone ";	//Здесь надо было вкорячить лямбду но тот вариант который я нашёл роняет вижлу на дебаге
 		//semaphor_gui::getInstance().slot_post_console_msg("[MANAGER]Max queue size = " + QString::number(s_queue.at(it_map->second)).leftJustified(2, ' '));
 		//Запись в таблицу и вывод лога в бекенд
 		for (uint8_t z_lst_it = 0; z_lst_it < zone_list->size(); ++z_lst_it)
@@ -428,20 +428,20 @@ void semaphor_manager::calc_transit_priority()
 					if (it_map->second == zone_map_it->second.at(b))
 					{
 						//qDebug() << "Accp" << QString::number(zone_list->at(z_lst_it).at(z_sublst_it));
-						logout += QString::number(zone_list->at(z_lst_it).at(z_sublst_it));
+						//logout += QString::number(zone_list->at(z_lst_it).at(z_sublst_it));
 						semaphor_gui::getInstance().write_table_content(it_map->first, 3, zone_list->at(z_lst_it).at(z_sublst_it));
 					}
 				}
 			}
 		}
-		logout += " | cycle timer " + QString::number(s_list[it_map->second]->get_cycle_timer_value()).leftJustified(2, ' ') + " times |";
+		//logout += " | cycle timer " + QString::number(s_list[it_map->second]->get_cycle_timer_value()).leftJustified(2, ' ') + " times |";
 		semaphor_gui::getInstance().write_table_content(it_map->first, 4, s_list[it_map->second]->get_cycle_timer_value());
-		qDebug() << logout;
+		//qDebug() << logout;
 		//Чистим буфер лога
-		logout.clear();
+		//logout.clear();
 	}
 	//semaphor_gui::getInstance().slot_post_console_msg("[LOG]Stored zone list num" + QString::number(n_zone).leftJustified(2, ' '));
-	qDebug() << "[LOG]Stored zone list num" << QString::number(n_zone).leftJustified(2, ' ');
+	//qDebug() << "[LOG]Stored zone list num" << QString::number(n_zone).leftJustified(2, ' ');
 	//queue_list->clear();	//Не сюда
 }
 
@@ -598,11 +598,11 @@ void semaphor_manager::add_semaphor_to_map(boost::container::vector<uint16_t> ma
 {
 	semaphor_map->insert(std::pair(semaphors_map_size, map));
 	semaphor_gui::getInstance().slot_post_console_msg("[LOG]Import semaphor list");
-	qDebug() << "[LOG]Import semaphor list";
+	//qDebug() << "[LOG]Import semaphor list";
 	for (uint8_t a = 0; a < static_cast<uint8_t>(map.size()); ++a)
 	{
 		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[VECTOR]Semaphor id = ") + QString::number(map[a]).leftJustified(2, ' ') + QObject::tr(" zone = ") + QString::number(semaphors_map_size).leftJustified(2, ' '));
-		qDebug() << "[VECTOR]Semaphor id =" << QString::number(map[a]).leftJustified(2, ' ') << "zone =" << QString::number(semaphors_map_size).leftJustified(2, ' ');
+		//qDebug() << "[VECTOR]Semaphor id =" << QString::number(map[a]).leftJustified(2, ' ') << "zone =" << QString::number(semaphors_map_size).leftJustified(2, ' ');
 	}
 	++semaphors_map_size;
 }
@@ -611,11 +611,11 @@ void semaphor_manager::add_semaphor_to_map(boost::container::vector<uint16_t> ma
 void semaphor_manager::add_parallel_zones(boost::container::vector<uint8_t> zone_lst)
 {
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG]Add zone list"));
-	qDebug() << "[LOG]Add zone list";
+	//qDebug() << "[LOG]Add zone list";
 	for (uint8_t a = 0; a < zone_lst.size(); ++a)
 	{
 		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[IMPORT] import zone") + QString::number(zone_lst[a]));
-		qDebug() << "[IMPORT] import zone" << QString::number(zone_lst[a]);
+		//qDebug() << "[IMPORT] import zone" << QString::number(zone_lst[a]);
 	}
 	zone_list->push_back(zone_lst);
 }
@@ -623,7 +623,7 @@ void semaphor_manager::add_parallel_zones(boost::container::vector<uint8_t> zone
 //Настройка частоты опроса менеджера в зависимости от очереди автомобилей перед светофором
 void semaphor_manager::set_polling_graph(std::pair<uint8_t, uint8_t> section)
 {
-	qDebug() << "[LOG]Add section {" << QString::number(section.first) << QString::number(section.second) << "}";
+	//qDebug() << "[LOG]Add section {" << QString::number(section.first) << QString::number(section.second) << "}";
 	polling_graph->push_back(std::pair<uint8_t,uint8_t>(section.first,section.second));
 }
 
@@ -631,20 +631,20 @@ void semaphor_manager::set_polling_graph(std::pair<uint8_t, uint8_t> section)
 void semaphor_manager::calc_udpate_cycle()
 {
 	uint16_t max_queue = 0;
-	qDebug() << "[LOG]Calc update cycle, current cycle" << QString::number(manager_cycle) << "times";
+	//qDebug() << "[LOG]Calc update cycle, current cycle" << QString::number(manager_cycle) << "times";
 	for (auto it_map = queue_list->cbegin(); it_map != queue_list->cend(); ++it_map)
 	{
 		if (max_queue < s_queue.at(it_map->second))
 			max_queue = s_queue.at(it_map->second);
 	}
-	qDebug() << "[LOG]Max queue =" << QString::number(max_queue);
+	//qDebug() << "[LOG]Max queue =" << QString::number(max_queue);
 	for (uint8_t a = 0; a < polling_graph->size(); ++a)
 	{
 		//qDebug() << "[LOG]Cycle length" << QString::number(cycle_length) << QString::number(polling_graph->at(a).first) << QString::number(max_queue);
 		if (polling_graph->at(a).first >= max_queue)
 		{
 			manager_cycle = polling_graph->at(a).second;
-			qDebug() << "[LOG]Set cycle length" << QString::number(manager_cycle);
+			//qDebug() << "[LOG]Set cycle length" << QString::number(manager_cycle);
 			break;
 		}
 	}

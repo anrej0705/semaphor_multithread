@@ -8,6 +8,7 @@
 #include <atomic>
 #include <map>
 #include <QtWidgets>
+#include <qdom.h>
 class semaphor_manager;
 class singlet_destroyer
 {
@@ -22,6 +23,21 @@ class singlet_destroyer
 class semaphor_manager
 {
 	private:
+		QDomDocument* xml_set_document;
+		QDomElement* semaphor_speed_cycles;	//Длина цикла в мс
+		QDomElement* generator_speed_cycles;	//Длина мс
+		QDomElement* manager_speed_cycles;	//Длина в мс
+		QDomElement* gui_refresh_speed_cycles;	//Длина в мс
+		QDomElement* gui_refresh_interval;	//Длина в циклах
+		QDomElement* xml_set_element;
+		QFile* xml_set_file;
+
+		uint16_t generator_timer_speed;
+		uint16_t semaphor_timer_speed;
+		uint16_t manager_speed_cycle;
+		uint16_t gui_refresh_speed_cycle;
+		uint16_t gui_refresh_interval_cycle;
+
 		bool generator_mode;
 		bool calc;
 		std::map<uint16_t, uint16_t> *queue_list;
@@ -148,6 +164,12 @@ class semaphor_manager
 
 		//Задаем скорость работы светофров
 		void set_semaphor_speed(uint16_t speed);
+
+		//Генератор XML документа
+		QDomElement parametr(QDomDocument& d_doc, const QString& param_name, const QString& param_value);
+
+		//Генератор XML строк
+		//QDomElement make_element(QDomDocument& d_doc, const QString& str_name, const QString& str_attr, const QString& str_text);
 	signals:
 		void send_msg(QString);
 };

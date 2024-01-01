@@ -66,6 +66,45 @@ semaphor_manager::semaphor_manager()
 	stop_thread = 0;
 	queue_delay = 1;
 	semaphor_speed = 1;
+	
+	//Параметры по умолчанию
+	semaphor_timer_speed = 42;
+	generator_timer_speed = 4;
+	manager_speed_cycle = 10;
+	gui_refresh_speed_cycle = 50;
+	gui_refresh_interval_cycle = -1;
+
+	xml_set_file = new QFile("param.xml");
+	if (xml_set_file->open(QIODevice::ReadOnly))
+	{
+		QXmlStreamReader sr(xml_set_file);
+		do {
+			sr.readNext();
+			qDebug() << sr.tokenString() << sr.name() << sr.text();
+		} while (!sr.atEnd());
+		if (sr.hasError())
+			qDebug() << "Err reading file";
+		xml_set_file->close();
+	}
+	else //Если файла не существует то создаем и сохраняем настройк по умолчанию
+	{
+		xml_set_document = new QDomDocument("__Shani_basic");;
+		QDomElement xml_set_element = xml_set_document->createElement("__Shani_basic");
+		xml_set_document->appendChild(xml_set_element);
+		xml_set_file->open(QIODevice::WriteOnly);
+		semaphor_speed_cycles = new QDomElement(parametr(*xml_set_document,"semaphor_speed_cycle",QString::number(semaphor_timer_speed)));
+		generator_speed_cycles = new QDomElement(parametr(*xml_set_document,"generator_speed_cycle",QString::number(generator_timer_speed)));
+		manager_speed_cycles = new QDomElement(parametr(*xml_set_document,"manager_speed_cycle",QString::number(manager_speed_cycle)));
+		gui_refresh_speed_cycles = new QDomElement(parametr(*xml_set_document,"gui_refresh_cycle",QString::number(gui_refresh_speed_cycle)));
+		gui_refresh_interval = new QDomElement(parametr(*xml_set_document,"gui_refresh_interval",QString::number(gui_refresh_interval_cycle)));
+		xml_set_element.appendChild(*semaphor_speed_cycles);
+		xml_set_element.appendChild(*generator_speed_cycles);
+		xml_set_element.appendChild(*manager_speed_cycles);
+		xml_set_element.appendChild(*gui_refresh_speed_cycles);
+		xml_set_element.appendChild(*gui_refresh_interval);
+		QTextStream(xml_set_file) << xml_set_document->toString();
+		xml_set_file->close();
+	}
 }
 //Пустой деструктор
 semaphor_manager::~semaphor_manager()
@@ -314,7 +353,7 @@ void semaphor_manager::queueGenerator()
 		++cycle_cnt;
 
 		//Задержка
-		boost::this_thread::sleep_for(boost::chrono::milliseconds(4));
+		boost::this_thread::sleep_for(boost::chrono::milliseconds(generator_timer_speed));
 	}
 }
 
@@ -352,7 +391,7 @@ void semaphor_manager::queueManager()
 		//Антилаг интерфейса
 		QApplication::processEvents();
 
-		boost::this_thread::sleep_for(boost::chrono::microseconds(10));
+		boost::this_thread::sleep_for(boost::chrono::microseconds(manager_speed_cycle));
 	}
 }
 
@@ -702,4 +741,30 @@ void semaphor_manager::set_semaphor_speed(uint16_t speed)
 {
 	semaphor_speed = speed;
 	semaphor_request(SET_CYCLE_SPEED);
+}
+
+QDomElement make_element(QDomDocument& d_doc, const QString& str_name, const QString& str_attr = QString(), const QString& str_text = QString())
+{
+	QDomElement d_elem = d_doc.createElement(str_name);
+	if (!str_attr.isEmpty())
+	{
+		QDomAttr d_attr = d_doc.createAttribute("attr");
+		d_attr.setValue(str_attr);
+		d_elem.setAttributeNode(d_attr);
+	}
+	if (!str_text.isEmpty())
+	{
+		QDomText d_txt = d_doc.createTextNode(str_text);
+		d_elem.appendChild(d_txt);
+	}
+	return d_elem;
+}
+
+QDomElement semaphor_manager::parametr(QDomDocument& d_doc, const QString& param_name, const QString& param_value)
+{
+	QDomElement dom_element = make_element(d_doc, "Settings", "uint16_t");
+	dom_element.appendChild(make_element(d_doc, "param", "", param_name));
+	dom_element.appendChild(make_element(d_doc, "value", "", param_value));
+	
+	return dom_element;
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE __Shani_basic>
+<__Shani_basic>
+ <Settings attr="uint16_t">
+  <param>semaphor_speed_cycle</param>
+  <value>42</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>generator_speed_cycle</param>
+  <value>4</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>manager_speed_cycle</param>
+  <value>10</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>gui_refresh_cycle</param>
+  <value>50</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>gui_refresh_interval</param>
+  <value>52685</value>
+ </Settings>
+</__Shani_basic>

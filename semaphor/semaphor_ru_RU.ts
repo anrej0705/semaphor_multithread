@@ -75,6 +75,14 @@
         <source>[IMPORT] import zone</source>
         <translation>[ИМПОРТ] импортирую зону</translation>
     </message>
+    <message>
+        <source>Semaphor speed in cycles</source>
+        <translation>Скорость работы светофоров(больше -&gt; меньше скорость)</translation>
+    </message>
+    <message>
+        <source>Speed</source>
+        <translation>Скорость</translation>
+    </message>
 </context>
 <context>
     <name>semaphorClass</name>

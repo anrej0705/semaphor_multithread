@@ -64,8 +64,14 @@ class semaphor_gui : public QWidget
 		QLabel* lbl_frequency;	//"Частота генерации"
 
 		//Панель со слотами-светофорами
+		QLabel* s_speed_lbl;
+		QLabel* speed_indc;
 		QGroupBox* slots_module;
+		QGroupBox* semaphor_speed_slider_box;
+		QHBoxLayout* s_speed_lay;
 		QHBoxLayout* slots_module_lay;
+		QVBoxLayout* semaphor_module_lay;
+		QSlider* semaphor_speed_slider;	//Регулировка скорости работы светофоров
 
 		boost::container::vector<std::pair<uint16_t, bool>> semaphor_state;
 		boost::container::vector<std::pair<uint16_t, uint16_t>> semaphor_gueue_cnt;
@@ -101,6 +107,7 @@ class semaphor_gui : public QWidget
 		void closeEvent(QCloseEvent* ce);
 	public slots:
 		void set_generator_frequency(int frequency);
+		void set_semaphor_speed(int speed);
 		void slot_receive_semaphor_info(std::pair<uint16_t, uint16_t>);
 		void slot_post_console_msg(QString msg);
 		void switch_generator_mode();

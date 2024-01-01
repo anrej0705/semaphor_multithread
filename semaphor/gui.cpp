@@ -51,8 +51,14 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	lbl_dis = new QLabel(tr("<--- Disable"));
 	mode_switcher = new QPushButton(tr("Switch"), generator_module);
 	console_lay = new QHBoxLayout;
-	slider_indicator = new QLabel(QString::number(25).leftJustified(2,' '));
+	slider_indicator = new QLabel(QString::number(25));
 	lbl_frequency = new QLabel(tr("Frequency: "));
+	semaphor_speed_slider = new QSlider(Qt::Horizontal);
+	semaphor_module_lay = new QVBoxLayout;
+	semaphor_speed_slider_box = new QGroupBox(QObject::tr("Semaphor speed in cycles"));
+	s_speed_lbl = new QLabel(QObject::tr("Speed"));
+	speed_indc = new QLabel("32");
+	s_speed_lay = new QHBoxLayout;
 	slot_cnt = 0;
 	thread_stop = 0;
 	gen_mode = 0;
@@ -64,6 +70,7 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	//semaphor_graphic_arr = new boost::container::vector<semaphor_graphic*>;
 
 	//Настройка модуля генератора
+	slider_indicator->setFixedWidth(24);
 	gen_rate_slider->setRange(1, 166);
 	gen_rate_slider->setTickInterval(4);
 	gen_rate_slider->setValue(25);
@@ -99,15 +106,19 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	generator_lay->addLayout(state_machine_lay);
 	generator_mode->start();
 
-	//Подключаем машину состояний к слотам управления генератором
-	if (!QObject::connect(gen_rate_slider, SIGNAL(valueChanged(int)), slider_indicator, SLOT(setNum(int))))
-		QErrorMessage::qtHandler();
-	if (!QObject::connect(gen_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(set_generator_frequency(int))))
-		QErrorMessage::qtHandler();
-	if (!QObject::connect(mode_en, &QState::entered, this, &semaphor_gui::switch_generator_mode))
-		QErrorMessage::qtHandler();
-	if (!QObject::connect(mode_en, &QState::exited, this, &semaphor_gui::switch_generator_mode))
-		QErrorMessage::qtHandler();
+	//Подключаем машину состояний и прочие зависимости
+	if (!QObject::connect(gen_rate_slider, SIGNAL(valueChanged(int)), slider_indicator, SLOT(setNum(int))));
+		//QErrorMessage::qtHandler();
+	if (!QObject::connect(gen_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(set_generator_frequency(int))));
+		//QErrorMessage::qtHandler();
+	if (!QObject::connect(mode_en, &QState::entered, this, &semaphor_gui::switch_generator_mode));
+		//QErrorMessage::qtHandler();
+	if (!QObject::connect(mode_en, &QState::exited, this, &semaphor_gui::switch_generator_mode));
+		//QErrorMessage::qtHandler();
+	if (QObject::connect(semaphor_speed_slider, SIGNAL(valueChanged(int)), speed_indc, SLOT(setNum(int))));
+		//QErrorMessage::qtHandler();
+	if (QObject::connect(semaphor_speed_slider, SIGNAL(valueChanged(int)), this, SLOT(set_semaphor_speed(int))));
+		//QErrorMessage::qtHandler();
 	
 
 	//Настройка панели со слотами-светофорами
@@ -120,9 +131,19 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 		semaphor_slots[a]->slot_set_id(a+1);
 		slots_module_lay->addWidget(semaphor_slots[a]);
 	}*/
-
-	slots_module->setLayout(slots_module_lay);
-	slots_module->setFixedHeight(400);
+	semaphor_speed_slider->setRange(1, 2048);
+	semaphor_speed_slider->setValue(32);
+	semaphor_speed_slider->setTickInterval(48);
+	semaphor_speed_slider->setTickPosition(QSlider::TicksBelow);
+	s_speed_lay->addWidget(s_speed_lbl);
+	s_speed_lay->addWidget(semaphor_speed_slider);
+	s_speed_lay->addWidget(speed_indc);
+	semaphor_speed_slider_box->setLayout(s_speed_lay);
+	semaphor_module_lay->addWidget(semaphor_speed_slider_box);
+	semaphor_module_lay->addLayout(slots_module_lay);
+	slots_module->setLayout(semaphor_module_lay);
+	slots_module->setFixedHeight(420);
+	speed_indc->setFixedWidth(24);
 
 	//Настройка консоли
 	console_box = new QGroupBox(tr("Console"));
@@ -337,6 +358,11 @@ void semaphor_gui::add_graphic_semaphor(uint16_t sem_id, std::pair<int16_t, int1
 	//semaphor_graphic_arr->at(s_g_cnt) = new semaphor_graphic(this, sem_id, sem_coord.first, sem_coord.second);
 }
 
+void semaphor_gui::set_semaphor_speed(int frequency)
+{
+	semaphor_manager::getInstance().set_semaphor_speed(static_cast<uint16_t>(frequency));
+}
+
 //Инициализация интерфейса слота панели управления светофором
 semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 {
@@ -377,8 +403,8 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 	btn_increment->setAutoFillBackground(1);
 	btn_decrement->setAutoFillBackground(1);
 
-	btn_increment->setFixedHeight(48);
-	btn_decrement->setFixedHeight(48);
+	btn_increment->setFixedHeight(32);
+	btn_decrement->setFixedHeight(32);
 
 	id_box_layout->addWidget(id);
 	queue_box_layout->addWidget(queue);
@@ -393,7 +419,7 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 
 	id_box->setFixedHeight(48);
 	queue_box->setFixedHeight(48);
-	color_box->setFixedHeight(48);
+	color_box->setFixedHeight(40);
 
 	slot_module->addWidget(id_box);
 	slot_module->addWidget(queue_box);

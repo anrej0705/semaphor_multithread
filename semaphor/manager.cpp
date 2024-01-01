@@ -65,6 +65,7 @@ semaphor_manager::semaphor_manager()
 	manager_cycle = 0;
 	stop_thread = 0;
 	queue_delay = 1;
+	semaphor_speed = 1;
 }
 //Пустой деструктор
 semaphor_manager::~semaphor_manager()
@@ -695,4 +696,10 @@ void semaphor_manager::set_gen_freq(int freq)
 void semaphor_manager::stop_generator()
 {
 	generator_mode = 0;
+}
+
+void semaphor_manager::set_semaphor_speed(uint16_t speed)
+{
+	semaphor_speed = speed;
+	semaphor_request(SET_CYCLE_SPEED);
 }

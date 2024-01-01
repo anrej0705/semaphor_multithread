@@ -54,7 +54,8 @@ class semaphor_manager
 		~semaphor_manager();
 		friend class singlet_destroyer;
 	public:
-		enum class status_codes	//fix C26812
+		uint16_t semaphor_speed;
+		enum// class status_codes	//fix C26812
 		{
 			STATUS_REQUEST = 0x01,
 			TRANSIT_ALLOWED = 0x02,
@@ -62,6 +63,7 @@ class semaphor_manager
 			SET_SHOT_TIMER = 0x04,
 			SET_SEND_TIMER = 0x05,
 			QUEUE_REQUEST = 0x06,
+			SET_CYCLE_SPEED = 0x07,
 			STOP = 0xFF
 		};
 		static semaphor_manager& getInstance();
@@ -143,6 +145,9 @@ class semaphor_manager
 
 		//Останавливаем генератор
 		void stop_generator();
+
+		//Задаем скорость работы светофров
+		void set_semaphor_speed(uint16_t speed);
 	signals:
 		void send_msg(QString);
 };

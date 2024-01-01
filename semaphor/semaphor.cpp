@@ -28,6 +28,7 @@ semaphor::semaphor()
 	roadBusy = 0;
 	cycle_timer = 0;
 	stop_thread = 0;
+	cycle_speed = 1;
 	neighbour = new boost::container::vector<uint16_t>;
 	polling_graph = new boost::container::vector<std::pair<uint8_t, uint8_t>>;
 }
@@ -276,6 +277,13 @@ void semaphor::read_manager_command()
 			manager_query_code = 0x00;
 			break;
 		}
+		case 0x07:
+		{
+			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " set cycle speed " + QString::number(semaphor_manager::getInstance().semaphor_speed) + "+ms]";
+			cycle_speed = semaphor_manager::getInstance().semaphor_speed;
+			manager_query_code = 0x00;
+			break;
+		}
 	}
 	//qDebug() << logout;
 	//logout.clear();
@@ -320,7 +328,7 @@ void semaphor::run_thread()
 	{
 		//qDebug() << "[THREAD" << QString::number(myId) << "]Cycle" << cycle_cnt;
 
-		boost::this_thread::sleep_for(boost::chrono::milliseconds(42));
+		boost::this_thread::sleep_for(boost::chrono::milliseconds(42+cycle_speed));
 		//Читаем команду полученную от менеджера
 		read_manager_command();
 

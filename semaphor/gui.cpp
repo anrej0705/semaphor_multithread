@@ -108,6 +108,7 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 		QErrorMessage::qtHandler();
 	if (!QObject::connect(mode_en, &QState::exited, this, &semaphor_gui::switch_generator_mode))
 		QErrorMessage::qtHandler();
+	
 
 	//Настройка панели со слотами-светофорами
 	slots_module = new QGroupBox(tr("Semaphors"));
@@ -412,6 +413,8 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 		QErrorMessage::qtHandler();
 	if (!QObject::connect(btn_decrement, SIGNAL(clicked()), this, SLOT(slot_decrement_queue())))
 		QErrorMessage::qtHandler();
+	if (!QObject::connect(btn_set_queue, SIGNAL(clicked()), this, SLOT(slot_set_queue_cnt())))
+		QErrorMessage::qtHandler();
 }
 
 //Для дебага
@@ -477,9 +480,10 @@ void semaphor_slot::slot_decrement_queue()
 	semaphor_manager::getInstance().decrement_semaphor_queue(myId);
 }
 
-void semaphor_slot::slot_set_queue_cnt(int queue)
+void semaphor_slot::slot_set_queue_cnt()
 {
-	semaphor_manager::getInstance().addSemaphorQueue(myId, queue);
+	QString toInt = multi_queue->toPlainText();
+	semaphor_manager::getInstance().addSemaphorQueue(myId, static_cast<uint16_t>(toInt.toInt()));
 }
 
 //Конструкторы на все случаи жизни

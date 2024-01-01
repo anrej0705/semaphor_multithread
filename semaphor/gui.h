@@ -147,7 +147,7 @@ class semaphor_slot : public QGroupBox
 	public slots:
 		void slot_increment_queue();
 		void slot_decrement_queue();
-		void slot_set_queue_cnt(int);
+		void slot_set_queue_cnt();
 };
 
 //Генератор графического представления светофора на карте(тормозит интерфейс!)

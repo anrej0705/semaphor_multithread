@@ -332,7 +332,7 @@ void semaphor_manager::queueManager()
 	{
 		if (stop_thread)
 		{
-			//semaphor_gui::getInstance().slot_post_console_msg("[MANAGER]Stopping manager thread");
+			semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Stopping manager thread"));
 			break;
 		}
 		//qDebug() << "[QUEUE]Cycle" << cycle_cnt;

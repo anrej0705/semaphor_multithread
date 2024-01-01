@@ -284,6 +284,13 @@ void semaphor::read_manager_command()
 			manager_query_code = 0x00;
 			break;
 		}
+		case 0x08:
+		{
+			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " set cycle speed " + QString::number(semaphor_manager::getInstance().semaphor_speed) + "+ms]";
+			cycle_speed = semaphor_manager::getInstance().get_cycle_timer_speed_ms();
+			manager_query_code = 0x00;
+			break;
+		}
 	}
 	//qDebug() << logout;
 	//logout.clear();

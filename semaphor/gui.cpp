@@ -64,6 +64,8 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	gen_mode = 0;
 	s_g_cnt = 0;
 
+	refresh_interval = 125;	//Период обновления графики
+
 	semaphor_manager::getInstance().set_gen_freq(167-25);
 
 	semaphor_slots = new boost::container::vector<semaphor_slot*>;
@@ -196,6 +198,9 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	for(uint8_t a=0;a<12;++a)
 		s_graph[a] = new semaphor_graphic(this, 0, 0);
 	//semaphor_graphic* red = new semaphor_graphic(this, 486, 288);
+
+	//Загружаем прочитанное из xml значение
+	refresh_interval = semaphor_manager::getInstance().read_update_interval_period();
 }
 
 semaphor_gui::~semaphor_gui()
@@ -280,7 +285,7 @@ void semaphor_gui::gui()
 		{
 			semaphor_slots->at(x.first)->slot_set_queue(x.second);
 		}*/
-		boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
+		boost::this_thread::sleep_for(boost::chrono::milliseconds(refresh_interval));
 	}
 }
 
@@ -361,6 +366,11 @@ void semaphor_gui::add_graphic_semaphor(uint16_t sem_id, std::pair<int16_t, int1
 void semaphor_gui::set_semaphor_speed(int frequency)
 {
 	semaphor_manager::getInstance().set_semaphor_speed(static_cast<uint16_t>(frequency));
+}
+
+void semaphor_gui::set_refresh_interval_ms(uint8_t ms)
+{
+	refresh_interval = ms;
 }
 
 //Инициализация интерфейса слота панели управления светофором

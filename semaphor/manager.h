@@ -80,6 +80,7 @@ class semaphor_manager
 			SET_SEND_TIMER = 0x05,
 			QUEUE_REQUEST = 0x06,
 			SET_CYCLE_SPEED = 0x07,
+			SET_CYCLE_MS = 0x08,
 			STOP = 0xFF
 		};
 		static semaphor_manager& getInstance();
@@ -170,6 +171,12 @@ class semaphor_manager
 
 		//Генератор XML строк
 		//QDomElement make_element(QDomDocument& d_doc, const QString& str_name, const QString& str_attr, const QString& str_text);
+
+		//Получаем значения скорости цикла
+		uint8_t get_cycle_timer_speed_ms();
+
+		//Читаем значение периода обновления графики
+		uint8_t read_update_interval_period();
 	signals:
 		void send_msg(QString);
 };

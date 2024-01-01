@@ -169,6 +169,7 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	hLay->addWidget(background_img);
 	hLay->addWidget(control_panel);
 	this->setLayout(hLay);
+	this->move(60, 100);
 	this->resize(1600, 768);
 	for(uint8_t a=0;a<12;++a)
 		s_graph[a] = new semaphor_graphic(this, 0, 0);
@@ -295,7 +296,7 @@ void semaphor_gui::showGUI()
 //Перехватчик события закрытия программы. Сначала останавливаются потоки, потом сама программа
 void semaphor_gui::closeEvent(QCloseEvent* ce)
 {
-	slot_post_console_msg("[LOG]Stopping threads, moment...");
+	slot_post_console_msg(QObject::tr("[LOG]Stopping threads, moment..."));
 	thread_stop = 1;
 	semaphor_manager::getInstance().stop_all_threads();
 	boost::this_thread::sleep_for(boost::chrono::milliseconds(12));
@@ -317,12 +318,12 @@ void semaphor_gui::switch_generator_mode()
 	if (gen_mode)
 	{
 		semaphor_manager::getInstance().run_queue_generator(true);
-		slot_post_console_msg("[GENERATOR]Generator on");
+		slot_post_console_msg(QObject::tr("[GENERATOR]Generator on"));
 	}
 	else
 	{
 		semaphor_manager::getInstance().stop_generator();
-		slot_post_console_msg("[GENERATOR]Generator off");
+		slot_post_console_msg(QObject::tr("[GENERATOR]Generator off"));
 	}
 }
 
@@ -348,6 +349,7 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 	id_box_layout = new QVBoxLayout;
 	queue_box_layout = new QVBoxLayout;
 	color_box_layout = new QVBoxLayout;
+	multi_queue_box_layout = new QVBoxLayout;
 
 	id = new QLabel("NULL");
 	queue = new QLabel("NULL");
@@ -359,41 +361,50 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 
 	color->setAutoFillBackground(1);
 
-	id_box = new QGroupBox("ID");
-	queue_box = new QGroupBox("Cnt");
+	multi_queue = new QTextEdit("5");
+	multi_queue->setAlignment(Qt::AlignCenter);
+
+	id_box = new QGroupBox(QObject::tr("ID"));
+	queue_box = new QGroupBox(QObject::tr("Cnt"));
 	color_box = new QGroupBox;
+	multi_queue_box = new QGroupBox;
 
 	btn_increment = new QPushButton("+");
 	btn_decrement = new QPushButton("-");
+	btn_set_queue = new QPushButton(QObject::tr("Set"));
 
 	btn_increment->setAutoFillBackground(1);
 	btn_decrement->setAutoFillBackground(1);
 
-	btn_increment->setFixedHeight(64);
-	btn_decrement->setFixedHeight(64);
+	btn_increment->setFixedHeight(48);
+	btn_decrement->setFixedHeight(48);
 
 	id_box_layout->addWidget(id);
 	queue_box_layout->addWidget(queue);
 	color_box_layout->addWidget(color);
+	multi_queue_box_layout->addWidget(multi_queue);
+	multi_queue_box_layout->addWidget(btn_set_queue);
 
 	id_box->setLayout(id_box_layout);
 	queue_box->setLayout(queue_box_layout);
 	color_box->setLayout(color_box_layout);
+	multi_queue_box->setLayout(multi_queue_box_layout);
 
-	id_box->setFixedHeight(64);
-	queue_box->setFixedHeight(64);
-	color_box->setFixedHeight(64);
+	id_box->setFixedHeight(48);
+	queue_box->setFixedHeight(48);
+	color_box->setFixedHeight(48);
 
 	slot_module->addWidget(id_box);
 	slot_module->addWidget(queue_box);
 	slot_module->addWidget(color_box);
+	slot_module->addWidget(multi_queue_box);
 	slot_module->addWidget(btn_increment);
 	slot_module->addWidget(btn_decrement);
 
 	color->setPalette(s_color_status);
 
 	this->setLayout(slot_module);
-	this->setFixedWidth(64);
+	this->setFixedWidth(68);
 	//this->setFixedHeight(360);
 
 	//Подключаем кнопки к слотам
@@ -426,7 +437,7 @@ void semaphor_slot::slot_set_queue(uint16_t queue_cnt)
 		QString check = queue->text();
 		if (check.toInt() != queue_cnt)
 		{
-			semaphor_gui::getInstance().slot_post_console_msg("[GUI PANEL ID" + QString::number(myId) + "]Error");
+			semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[GUI PANEL ID") + QString::number(myId) + QObject::tr("]Error"));
 			qDebug() << "[GUI PANEL ID" << QString::number(myId) << "]Error";
 		}
 		});
@@ -466,6 +477,10 @@ void semaphor_slot::slot_decrement_queue()
 	semaphor_manager::getInstance().decrement_semaphor_queue(myId);
 }
 
+void semaphor_slot::slot_set_queue_cnt(int queue)
+{
+	semaphor_manager::getInstance().addSemaphorQueue(myId, queue);
+}
 
 //Конструкторы на все случаи жизни
 semaphor_graphic::semaphor_graphic(QWidget* qwgt) : QWidget(qwgt)

@@ -117,18 +117,23 @@ class semaphor_slot : public QGroupBox
 
 		QVBoxLayout* slot_module;	//Компоновщик элементов
 		
-		QVBoxLayout* id_box_layout;
-		QVBoxLayout* queue_box_layout;
-		QVBoxLayout* color_box_layout;
+		QVBoxLayout* multi_queue_box_layout;	//Компоновка блока задания очереди n юнитов
+		QVBoxLayout* id_box_layout;	//Компоновка для ИД
+		QVBoxLayout* queue_box_layout;	//Компоновка счетчика очереди
+		QVBoxLayout* color_box_layout;	//Компоновка индикатора состояния
+
+		QTextEdit* multi_queue;	//Поле ввода пользователем
 
 		QLabel* id;		//ИД светофора
 		QLabel* queue;	//Счетчик очереди
 		QLabel* color;	//Цвет(сигнал)
 
+		QGroupBox* multi_queue_box;
 		QGroupBox* id_box;
 		QGroupBox* queue_box;
 		QGroupBox* color_box;
 
+		QPushButton* btn_set_queue;	//Добавить очерель из n машин
 		QPushButton* btn_increment;	//Добавить очередь +1
 		QPushButton* btn_decrement;	//Убавить очередь -1
 	public:
@@ -142,6 +147,7 @@ class semaphor_slot : public QGroupBox
 	public slots:
 		void slot_increment_queue();
 		void slot_decrement_queue();
+		void slot_set_queue_cnt(int);
 };
 
 //Генератор графического представления светофора на карте(тормозит интерфейс!)

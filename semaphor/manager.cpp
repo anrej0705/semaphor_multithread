@@ -89,7 +89,7 @@ void semaphor_manager::add_semaphor(uint16_t sem_id)
 	//std::lock_guard<std::mutex> lg(m_mut);
 	//std::unique_lock<std::mutex> ul(m_mut);
 	//m_mut.lock();
-	semaphor_gui::getInstance().slot_post_console_msg("[LOG] New semaphor with id = " + sem_id);
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG] New semaphor with id = ") + sem_id);
 	qDebug() << "[LOG] New semaphor with id =" << sem_id;
 	s_id->push_back(sem_id);
 	reg_s_state->push_back(0x00);	//Состояние светофора неизвестно, оставим 0, то есть светофор ещё ни разу не читался
@@ -179,7 +179,7 @@ uint8_t semaphor_manager::read_s_state(uint16_t sem_id)
 */
 void semaphor_manager::create_semaphor()
 {
-	semaphor_gui::getInstance().slot_post_console_msg("[LOG]Adding semaphore");
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG]Adding semaphore"));
 	qDebug() << "[LOG]Adding semaphore";
 	++semaphors_cnt;
 	s_list.resize(semaphors_cnt);	//Инициализируемся
@@ -226,7 +226,8 @@ void semaphor_manager::addSemaphorQueue(uint16_t sem_id)
 //Добавить очередь из 2 и более машин перед светофром с выбранным ИД
 void semaphor_manager::addSemaphorQueue(uint16_t sem_id, uint8_t q_size)
 {
-	//qDebug() << "[LOG] Increment semaphor id =" << sem_id << "queue +=" << q_size;
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Set queue size ") + QString::number(q_size));
+	qDebug() << "[LOG] Increment semaphor id =" << sem_id << "queue +=" << q_size;
 	s_list[sem_id]->queue += q_size;
 }
 
@@ -237,14 +238,14 @@ void semaphor_manager::decrement_semaphor_queue(uint16_t sem_id)
 {
 	if (s_list[sem_id]->queue == 0)	//Если машин нету то выходим сразу
 		return;
-	semaphor_gui::getInstance().slot_post_console_msg("[MANAGER]Decrement queue to id " + QString::number(sem_id) + "(" + QString::number(s_list[sem_id]->queue) + " -> " + QString::number(s_list[sem_id]->queue - 1) + ")");
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Decrement queue to id ") + QString::number(sem_id) + "(" + QString::number(s_list[sem_id]->queue) + " -> " + QString::number(s_list[sem_id]->queue - 1) + ")");
 	qDebug() << "[LOG]Decrement semaphor id =" << sem_id << "queue +1";
 	s_list[sem_id]->queue--;
 }
 
 void semaphor_manager::increment_semaphor_queue(uint16_t sem_id)
 {
-	semaphor_gui::getInstance().slot_post_console_msg("[MANAGER]Increment queue to id " + QString::number(sem_id) + "(" + QString::number(s_list[sem_id]->queue) + " -> " + QString::number(s_list[sem_id]->queue+1) + ")");
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Increment queue to id ") + QString::number(sem_id) + "(" + QString::number(s_list[sem_id]->queue) + " -> " + QString::number(s_list[sem_id]->queue+1) + ")");
 	qDebug() << "[LOG]Increment semaphor id =" << sem_id << "queue +1";
 	s_list[sem_id]->queue++;
 }
@@ -600,7 +601,7 @@ void semaphor_manager::add_semaphor_to_map(boost::container::vector<uint16_t> ma
 	qDebug() << "[LOG]Import semaphor list";
 	for (uint8_t a = 0; a < static_cast<uint8_t>(map.size()); ++a)
 	{
-		semaphor_gui::getInstance().slot_post_console_msg("[VECTOR]Semaphor id = " + QString::number(map[a]).leftJustified(2, ' ') + " zone = " + QString::number(semaphors_map_size).leftJustified(2, ' '));
+		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[VECTOR]Semaphor id = ") + QString::number(map[a]).leftJustified(2, ' ') + QObject::tr(" zone = ") + QString::number(semaphors_map_size).leftJustified(2, ' '));
 		qDebug() << "[VECTOR]Semaphor id =" << QString::number(map[a]).leftJustified(2, ' ') << "zone =" << QString::number(semaphors_map_size).leftJustified(2, ' ');
 	}
 	++semaphors_map_size;
@@ -609,11 +610,11 @@ void semaphor_manager::add_semaphor_to_map(boost::container::vector<uint16_t> ma
 //Настройка списка одновременно разрешенных к проезду зон
 void semaphor_manager::add_parallel_zones(boost::container::vector<uint8_t> zone_lst)
 {
-	semaphor_gui::getInstance().slot_post_console_msg("[LOG]Add zone list");
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG]Add zone list"));
 	qDebug() << "[LOG]Add zone list";
 	for (uint8_t a = 0; a < zone_lst.size(); ++a)
 	{
-		semaphor_gui::getInstance().slot_post_console_msg("[IMPORT] import zone" + QString::number(zone_lst[a]));
+		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[IMPORT] import zone") + QString::number(zone_lst[a]));
 		qDebug() << "[IMPORT] import zone" << QString::number(zone_lst[a]);
 	}
 	zone_list->push_back(zone_lst);

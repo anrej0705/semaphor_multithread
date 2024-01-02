@@ -307,14 +307,20 @@ void semaphor::set_polling_graph(std::pair<uint8_t, uint8_t> section)
 void semaphor::calc_query_cycle()
 {
 	//qDebug() << "[THREAD, Semaphor id" << QString::number(myId) << "]Calc cycle, current" << QString::number(cycle_timer) << "times";
-	for (uint8_t a = 0; a < polling_graph->size(); ++a)
+	// 
+	//По умолчанию ставим самый быстрый цикл
+	cycle_timer = polling_graph->at(polling_graph->size() - 1).second;
+	for (uint8_t a = polling_graph->size() - 1; a > 0; --a)
 	{
-		if (polling_graph->at(a).first >= queue)
+		//qDebug() << "[LOG]Cycle length" << QString::number(cycle_length) << QString::number(polling_graph->at(a).first) << QString::number(max_queue);
+		if (polling_graph->at(a).first <= queue)
 		{
 			cycle_timer = polling_graph->at(a).second;
-			//qDebug() << "[LOG]Set cycle length" << QString::number(cycle_timer);
+			//qDebug() << "[LOG]Set cycle length" << QString::number(manager_cycle);
 			break;
 		}
+		else if (queue == 0)
+			cycle_timer = polling_graph->at(0).second;
 	}
 	//qDebug() << "[THREAD, Semaphor id" << QString::number(myId) << "]Set cycle length" << QString::number(cycle_timer) << "times";
 }

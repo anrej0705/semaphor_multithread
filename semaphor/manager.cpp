@@ -774,15 +774,20 @@ void semaphor_manager::calc_udpate_cycle()
 			max_queue = s_queue.at(it_map->second);
 	}
 	//qDebug() << "[LOG]Max queue =" << QString::number(max_queue);
-	for (uint8_t a = 0; a < polling_graph->size(); ++a)
+
+	//По умолчанию ставим самый быстрый цикл
+	manager_cycle = polling_graph->at(polling_graph->size() - 1).second;
+	for (uint8_t a = polling_graph->size()-1; a > 0; --a)
 	{
 		//qDebug() << "[LOG]Cycle length" << QString::number(cycle_length) << QString::number(polling_graph->at(a).first) << QString::number(max_queue);
-		if (polling_graph->at(a).first >= max_queue)
+		if (polling_graph->at(a).first <= max_queue)
 		{
 			manager_cycle = polling_graph->at(a).second;
 			//qDebug() << "[LOG]Set cycle length" << QString::number(manager_cycle);
 			break;
 		}
+		else if (max_queue == 0)
+			manager_cycle = polling_graph->at(0).second;
 	}
 	//qDebug() << "[LOG]Cycle length" << QString::number(cycle_length);
 }

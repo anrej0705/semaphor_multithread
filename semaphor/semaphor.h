@@ -73,5 +73,5 @@ class semaphor : public QWidget
 		uint8_t get_cycle_timer_value();
 	signals:
 		//Сигнал для передачи информации о светофоре
-		void signal_send_info(std::pair<uint16_t, uint16_t>);
+		//void signal_send_info(std::pair<uint16_t, uint16_t>);
 };

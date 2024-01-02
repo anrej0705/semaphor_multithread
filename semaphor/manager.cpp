@@ -73,134 +73,6 @@ semaphor_manager::semaphor_manager()
 	manager_speed_cycle = 10;
 	gui_refresh_speed_cycle = 50;
 	gui_refresh_interval_cycle = -1;
-
-	xml_set_file = new QFile("param.xml");
-	if (xml_set_file->open(QIODevice::ReadOnly))
-	{
-		qDebug() << "Read param";
-		QXmlStreamReader xml_set(xml_set_file);
-		while (!xml_set.atEnd() && !xml_set.hasError())
-		{
-			//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-			if (xml_set.name() == "__Shani_basic")
-			{
-				qDebug() << "Settings signature" << xml_set.name();
-				while (!xml_set.atEnd() && !xml_set.hasError())
-				{
-					//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-					QXmlStreamReader::TokenType token = xml_set.readNext();
-					if (token == QXmlStreamReader::StartDocument)
-						continue;
-					if (token == QXmlStreamReader::Characters)
-					{
-						//qDebug() << xml_set.name() << xml_set.text();
-						if (xml_set.text() == "semaphor_speed_cycle")
-						{
-							while (xml_set.name() != "Settings")
-							{
-								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-								if (token == QXmlStreamReader::StartElement)
-								{
-									token = xml_set.readNext();
-									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-									semaphor_timer_speed = xml_set.text().toInt();
-									qDebug() << QString::number(semaphor_timer_speed);
-									semaphor_request(SET_CYCLE_MS);
-								}
-								token = xml_set.readNext();
-							}
-						}
-						else if (xml_set.text() == "generator_speed_cycle")
-						{
-							while (xml_set.name() != "Settings")
-							{
-								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-								if (token == QXmlStreamReader::StartElement)
-								{
-									token = xml_set.readNext();
-									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-									generator_timer_speed = xml_set.text().toInt();
-									qDebug() << QString::number(generator_timer_speed);
-								}
-								token = xml_set.readNext();
-							}
-							//qDebug() << xml_set.text();
-						}
-						else if (xml_set.text() == "manager_speed_cycle")
-						{
-							while (xml_set.name() != "Settings")
-							{
-								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-								if (token == QXmlStreamReader::StartElement)
-								{
-									token = xml_set.readNext();
-									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-									manager_speed_cycle = xml_set.text().toInt();
-									qDebug() << QString::number(manager_speed_cycle);
-								}
-								token = xml_set.readNext();
-							}
-							//qDebug() << xml_set.text();
-						}
-						else if (xml_set.text() == "gui_refresh_cycle")
-						{
-							//q
-							while (xml_set.name() != "Settings")
-							{
-								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-								if (token == QXmlStreamReader::StartElement)
-								{
-									token = xml_set.readNext();
-									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-									gui_refresh_speed_cycle = xml_set.text().toInt();
-									qDebug() << QString::number(gui_refresh_speed_cycle);
-									//semaphor_gui::getInstance().set_refresh_interval_ms(gui_refresh_speed_cycle);
-								}
-								token = xml_set.readNext();
-							}
-							//Debug() << xml_set.text();
-						}
-						else if (xml_set.text() == "gui_refresh_interval")	//Не используется
-						{
-							while (xml_set.name() != "Settings")
-							{
-								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-								if (token == QXmlStreamReader::StartElement)
-								{
-									token = xml_set.readNext();
-									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
-									gui_refresh_interval_cycle = xml_set.text().toInt();
-									qDebug() << QString::number(gui_refresh_interval_cycle);
-								}
-								token = xml_set.readNext();
-							}
-							//qDebug() << xml_set.text();
-						}
-					}
-				}
-			}
-			QXmlStreamReader::TokenType token = xml_set.readNext();
-		}
-	}
-	else //Если файла не существует то создаем и сохраняем настройк по умолчанию
-	{
-		xml_set_document = new QDomDocument("__Shani_basic");;
-		QDomElement xml_set_element = xml_set_document->createElement("__Shani_basic");
-		xml_set_document->appendChild(xml_set_element);
-		xml_set_file->open(QIODevice::WriteOnly);
-		semaphor_speed_cycles = new QDomElement(parametr(*xml_set_document,"semaphor_speed_cycle",QString::number(semaphor_timer_speed)));
-		generator_speed_cycles = new QDomElement(parametr(*xml_set_document,"generator_speed_cycle",QString::number(generator_timer_speed)));
-		manager_speed_cycles = new QDomElement(parametr(*xml_set_document,"manager_speed_cycle",QString::number(manager_speed_cycle)));
-		gui_refresh_speed_cycles = new QDomElement(parametr(*xml_set_document,"gui_refresh_cycle",QString::number(gui_refresh_speed_cycle)));
-		gui_refresh_interval = new QDomElement(parametr(*xml_set_document,"gui_refresh_interval",QString::number(gui_refresh_interval_cycle)));
-		xml_set_element.appendChild(*semaphor_speed_cycles);
-		xml_set_element.appendChild(*generator_speed_cycles);
-		xml_set_element.appendChild(*manager_speed_cycles);
-		xml_set_element.appendChild(*gui_refresh_speed_cycles);
-		xml_set_element.appendChild(*gui_refresh_interval);
-		QTextStream(xml_set_file) << xml_set_document->toString();
-		xml_set_file->close();
-	}
 }
 //Пустой деструктор
 semaphor_manager::~semaphor_manager()
@@ -463,6 +335,8 @@ void semaphor_manager::run_manager()
 //Менеджер
 void semaphor_manager::queueManager()
 {
+	boost::this_thread::sleep_for(boost::chrono::milliseconds(150));
+	read_xml();
 	uint8_t cycle_cnt = 0;
 	while (1)
 	{
@@ -873,7 +747,7 @@ QDomElement semaphor_manager::parametr(QDomDocument& d_doc, const QString& param
 	return dom_element;
 }
 
-uint8_t semaphor_manager::get_cycle_timer_speed_ms()
+uint16_t semaphor_manager::get_cycle_timer_speed_ms()
 {
 	return semaphor_timer_speed;
 }
@@ -881,4 +755,135 @@ uint8_t semaphor_manager::get_cycle_timer_speed_ms()
 uint8_t semaphor_manager::read_update_interval_period()
 {
 	return gui_refresh_speed_cycle;
+}
+
+void semaphor_manager::read_xml()
+{
+	xml_set_file = new QFile("param.xml");
+	if (xml_set_file->open(QIODevice::ReadOnly))
+	{
+		qDebug() << "Read param";
+		QXmlStreamReader xml_set(xml_set_file);
+		while (!xml_set.atEnd() && !xml_set.hasError())
+		{
+			//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+			if (xml_set.name() == "__Shani_basic")
+			{
+				qDebug() << "Settings signature" << xml_set.name();
+				while (!xml_set.atEnd() && !xml_set.hasError())
+				{
+					//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+					QXmlStreamReader::TokenType token = xml_set.readNext();
+					if (token == QXmlStreamReader::StartDocument)
+						continue;
+					if (token == QXmlStreamReader::Characters)
+					{
+						//qDebug() << xml_set.name() << xml_set.text();
+						if (xml_set.text() == "semaphor_speed_cycle")
+						{
+							while (xml_set.name() != "Settings")
+							{
+								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+								if (token == QXmlStreamReader::StartElement)
+								{
+									token = xml_set.readNext();
+									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+									semaphor_timer_speed = xml_set.text().toInt();
+									qDebug() << QString::number(semaphor_timer_speed);
+									semaphor_request(SET_CYCLE_MS);
+								}
+								token = xml_set.readNext();
+							}
+						}
+						else if (xml_set.text() == "generator_speed_cycle")
+						{
+							while (xml_set.name() != "Settings")
+							{
+								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+								if (token == QXmlStreamReader::StartElement)
+								{
+									token = xml_set.readNext();
+									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+									generator_timer_speed = xml_set.text().toInt();
+									qDebug() << QString::number(generator_timer_speed);
+								}
+								token = xml_set.readNext();
+							}
+							//qDebug() << xml_set.text();
+						}
+						else if (xml_set.text() == "manager_speed_cycle")
+						{
+							while (xml_set.name() != "Settings")
+							{
+								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+								if (token == QXmlStreamReader::StartElement)
+								{
+									token = xml_set.readNext();
+									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+									manager_speed_cycle = xml_set.text().toInt();
+									qDebug() << QString::number(manager_speed_cycle);
+								}
+								token = xml_set.readNext();
+							}
+							//qDebug() << xml_set.text();
+						}
+						else if (xml_set.text() == "gui_refresh_cycle")
+						{
+							//q
+							while (xml_set.name() != "Settings")
+							{
+								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+								if (token == QXmlStreamReader::StartElement)
+								{
+									token = xml_set.readNext();
+									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+									gui_refresh_speed_cycle = xml_set.text().toInt();
+									qDebug() << QString::number(gui_refresh_speed_cycle);
+									//semaphor_gui::getInstance().set_refresh_interval_ms(gui_refresh_speed_cycle);
+								}
+								token = xml_set.readNext();
+							}
+							//Debug() << xml_set.text();
+						}
+						else if (xml_set.text() == "gui_refresh_interval")	//Не используется
+						{
+							while (xml_set.name() != "Settings")
+							{
+								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+								if (token == QXmlStreamReader::StartElement)
+								{
+									token = xml_set.readNext();
+									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+									gui_refresh_interval_cycle = xml_set.text().toInt();
+									qDebug() << QString::number(gui_refresh_interval_cycle);
+								}
+								token = xml_set.readNext();
+							}
+							//qDebug() << xml_set.text();
+						}
+					}
+				}
+			}
+			QXmlStreamReader::TokenType token = xml_set.readNext();
+		}
+	}
+	else //Если файла не существует то создаем и сохраняем настройк по умолчанию
+	{
+		xml_set_document = new QDomDocument("__Shani_basic");;
+		QDomElement xml_set_element = xml_set_document->createElement("__Shani_basic");
+		xml_set_document->appendChild(xml_set_element);
+		xml_set_file->open(QIODevice::WriteOnly);
+		semaphor_speed_cycles = new QDomElement(parametr(*xml_set_document, "semaphor_speed_cycle", QString::number(semaphor_timer_speed)));
+		generator_speed_cycles = new QDomElement(parametr(*xml_set_document, "generator_speed_cycle", QString::number(generator_timer_speed)));
+		manager_speed_cycles = new QDomElement(parametr(*xml_set_document, "manager_speed_cycle", QString::number(manager_speed_cycle)));
+		gui_refresh_speed_cycles = new QDomElement(parametr(*xml_set_document, "gui_refresh_cycle", QString::number(gui_refresh_speed_cycle)));
+		gui_refresh_interval = new QDomElement(parametr(*xml_set_document, "gui_refresh_interval", QString::number(gui_refresh_interval_cycle)));
+		xml_set_element.appendChild(*semaphor_speed_cycles);
+		xml_set_element.appendChild(*generator_speed_cycles);
+		xml_set_element.appendChild(*manager_speed_cycles);
+		xml_set_element.appendChild(*gui_refresh_speed_cycles);
+		xml_set_element.appendChild(*gui_refresh_interval);
+		QTextStream(xml_set_file) << xml_set_document->toString();
+		xml_set_file->close();
+	}
 }

@@ -223,12 +223,13 @@ void semaphor::set_name(std::string name)
 //Читает команду от менеджера(поле volatile) и выполняет
 void semaphor::read_manager_command()
 {
-	//QString logout;
+	QString logout;
 	switch (manager_query_code)
 	{
 		case 0x00:
 		{
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " no query]";
+			//qDebug() << logout;
 			break;
 		}
 		case 0x01:
@@ -236,6 +237,7 @@ void semaphor::read_manager_command()
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " status request]";
 			semaphor_manager::getInstance().load_s_state(myId, status);
 			manager_query_code = 0x00;
+			//qDebug() << logout;
 			break;
 		}
 		case 0x02:
@@ -243,6 +245,7 @@ void semaphor::read_manager_command()
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " transit allowed]";
 			transitAllowed = 1;
 			manager_query_code = 0x00;
+			//qDebug() << logout;
 			break;
 		}
 		case 0x03:
@@ -250,30 +253,35 @@ void semaphor::read_manager_command()
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " transit disallowed]";
 			transitAllowed = 0;
 			manager_query_code = 0x00;
+			//qDebug() << logout;
 			break;
 		}
 		case 0x04:
 		{
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " setup shot timer]";
 			manager_query_code = 0x00;
+			//qDebug() << logout;
 			break;
 		}
 		case 0xFF:
 		{
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " disable semaphor]";
 			manager_query_code = 0x00;
+			//qDebug() << logout;
 			break;
 		}
 		case 0x05:
 		{
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " setup send query timer]";
 			manager_query_code = 0x00;
+			//qDebug() << logout;
 			break;
 		}
 		case 0x06:
 		{
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " queue count]";
 			semaphor_manager::getInstance().load_s_queue(myId, queue);
+			//qDebug() << logout;
 			manager_query_code = 0x00;
 			break;
 		}
@@ -281,19 +289,20 @@ void semaphor::read_manager_command()
 		{
 			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " set cycle speed " + QString::number(semaphor_manager::getInstance().semaphor_speed) + "+ms]";
 			cycle_speed = semaphor_manager::getInstance().semaphor_speed;
+			//qDebug() << logout;
 			manager_query_code = 0x00;
 			break;
 		}
 		case 0x08:
 		{
-			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " set cycle speed " + QString::number(semaphor_manager::getInstance().semaphor_speed) + "+ms]";
 			cycle_speed = semaphor_manager::getInstance().get_cycle_timer_speed_ms();
+			//logout += "[query code " + QString::number(manager_query_code).leftJustified(2, ' ') + " set cycle speed " + QString::number(cycle_speed) + "+ms]";
 			manager_query_code = 0x00;
+			//qDebug() << logout;
 			break;
 		}
 	}
-	//qDebug() << logout;
-	//logout.clear();
+	logout.clear();
 }
 
 //Скопировать график себе посекционно

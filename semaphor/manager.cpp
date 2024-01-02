@@ -767,6 +767,7 @@ void semaphor_manager::read_xml()
 		QXmlStreamReader xml_set(xml_set_file);
 		while (!xml_set.atEnd() && !xml_set.hasError())
 		{
+			QXmlStreamReader::TokenType token = xml_set.readNext();
 			//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 			if (xml_set.name() == "__Shani_basic")
 			{
@@ -867,11 +868,11 @@ void semaphor_manager::read_xml()
 								token = xml_set.readNext();
 							}
 							//qDebug() << xml_set.text();
+							break;	//Вырубаем цикл так как всё прочитано уже
 						}
 					}
 				}
 			}
-			QXmlStreamReader::TokenType token = xml_set.readNext();
 		}
 	}
 	else //Если файла не существует то создаем и сохраняем настройк по умолчанию

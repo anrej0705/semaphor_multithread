@@ -107,7 +107,7 @@ class semaphor_gui : public QWidget
 		void run_gui();
 		void gui();
 		void closeEvent(QCloseEvent* ce);
-		void set_refresh_interval_ms(uint8_t ms);
+		void set_refresh_interval_ms(uint16_t ms);
 	public slots:
 		void set_generator_frequency(int frequency);
 		void set_semaphor_speed(int speed);

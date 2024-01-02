@@ -9,11 +9,11 @@
     </message>
     <message>
         <source>[GENERATOR]Generator on</source>
-        <translation>[ГЕНЕРАТОР]Отключён</translation>
+        <translation>[ГЕНЕРАТОР]Активен</translation>
     </message>
     <message>
         <source>[GENERATOR]Generator off</source>
-        <translation>[ГЕНЕРАТОР]Активен</translation>
+        <translation>[ГЕНЕРАТОР]Отключен</translation>
     </message>
     <message>
         <source>ID</source>

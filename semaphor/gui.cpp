@@ -375,7 +375,7 @@ void semaphor_gui::set_semaphor_speed(int frequency)
 	semaphor_manager::getInstance().set_semaphor_speed(static_cast<uint16_t>(frequency));
 }
 
-void semaphor_gui::set_refresh_interval_ms(uint8_t ms)
+void semaphor_gui::set_refresh_interval_ms(uint16_t ms)
 {
 	refresh_interval = ms;
 }

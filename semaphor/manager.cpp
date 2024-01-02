@@ -845,7 +845,7 @@ void semaphor_manager::read_xml()
 									gui_refresh_speed_cycle = xml_set.text().toInt();
 									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set GUI refresh cycle ") + QString::number(gui_refresh_speed_cycle) + QObject::tr(" ms"));
 									//qDebug() << QString::number(gui_refresh_speed_cycle);
-									//semaphor_gui::getInstance().set_refresh_interval_ms(gui_refresh_speed_cycle);
+									semaphor_gui::getInstance().set_refresh_interval_ms(gui_refresh_speed_cycle);
 								}
 								token = xml_set.readNext();
 							}

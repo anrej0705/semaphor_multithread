@@ -762,14 +762,16 @@ void semaphor_manager::read_xml()
 	xml_set_file = new QFile("param.xml");
 	if (xml_set_file->open(QIODevice::ReadOnly))
 	{
-		qDebug() << "Read param";
+		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Load XML"));
+		//qDebug() << "Read param";
 		QXmlStreamReader xml_set(xml_set_file);
 		while (!xml_set.atEnd() && !xml_set.hasError())
 		{
 			//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 			if (xml_set.name() == "__Shani_basic")
 			{
-				qDebug() << "Settings signature" << xml_set.name() << "VALID";
+				semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Setting file signature [") + xml_set.name() + QObject::tr("] VALID"));
+				//qDebug() << "Settings signature" << xml_set.name() << "VALID";
 				while (!xml_set.atEnd() && !xml_set.hasError())
 				{
 					//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
@@ -789,7 +791,8 @@ void semaphor_manager::read_xml()
 									token = xml_set.readNext();
 									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 									semaphor_timer_speed = xml_set.text().toInt();
-									qDebug() << QString::number(semaphor_timer_speed);
+									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set semaphor thread speed ") + QString::number(semaphor_timer_speed) + QObject::tr(" ms"));
+									//qDebug() << QString::number(semaphor_timer_speed);
 									semaphor_request(SET_CYCLE_MS);
 								}
 								token = xml_set.readNext();
@@ -805,7 +808,8 @@ void semaphor_manager::read_xml()
 									token = xml_set.readNext();
 									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 									generator_timer_speed = xml_set.text().toInt();
-									qDebug() << QString::number(generator_timer_speed);
+									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set generator speed ") + QString::number(generator_timer_speed) + QObject::tr(" ms"));
+									//qDebug() << QString::number(generator_timer_speed);
 								}
 								token = xml_set.readNext();
 							}
@@ -821,7 +825,8 @@ void semaphor_manager::read_xml()
 									token = xml_set.readNext();
 									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 									manager_speed_cycle = xml_set.text().toInt();
-									qDebug() << QString::number(manager_speed_cycle);
+									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set manager cycle ") + QString::number(manager_speed_cycle) + QObject::tr(" ms"));
+									//qDebug() << QString::number(manager_speed_cycle);
 								}
 								token = xml_set.readNext();
 							}
@@ -838,7 +843,8 @@ void semaphor_manager::read_xml()
 									token = xml_set.readNext();
 									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 									gui_refresh_speed_cycle = xml_set.text().toInt();
-									qDebug() << QString::number(gui_refresh_speed_cycle);
+									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set GUI refresh cycle ") + QString::number(gui_refresh_speed_cycle) + QObject::tr(" ms"));
+									//qDebug() << QString::number(gui_refresh_speed_cycle);
 									//semaphor_gui::getInstance().set_refresh_interval_ms(gui_refresh_speed_cycle);
 								}
 								token = xml_set.readNext();
@@ -855,7 +861,8 @@ void semaphor_manager::read_xml()
 									token = xml_set.readNext();
 									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 									gui_refresh_interval_cycle = xml_set.text().toInt();
-									qDebug() << QString::number(gui_refresh_interval_cycle);
+									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Unused uint16_t=") + QString::number(gui_refresh_interval_cycle) + "");
+									//qDebug() << QString::number(gui_refresh_interval_cycle);
 								}
 								token = xml_set.readNext();
 							}

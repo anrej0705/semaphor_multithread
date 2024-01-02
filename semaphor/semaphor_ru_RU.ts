@@ -87,6 +87,42 @@
         <source>[LOG]Import semaphor list</source>
         <translation>[ИМПОРТ]Импортирую список соседей</translation>
     </message>
+    <message>
+        <source>[XML PARSER]Load XML</source>
+        <translation>[ПАРСЕР XML]Загружаю XML конфиг</translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Setting file signature [</source>
+        <translation>[XML ПАРСЕР]Сигнатура [</translation>
+    </message>
+    <message>
+        <source>] VALID</source>
+        <translation>] правильная</translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Set semaphor thread speed </source>
+        <translation>[XML парсер]Задаю длт. цикла светофоров </translation>
+    </message>
+    <message>
+        <source> ms</source>
+        <translation> мс</translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Set generator speed </source>
+        <translation>[XML ПАРСЕР]Задаю период цикла генератора </translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Set manager cycle </source>
+        <translation>[XML ПАРСЕР]Задаю длительность цикла менеджера </translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Set GUI refresh cycle </source>
+        <translation>[XML ПАРСЕР]Задаю период обновления GUI </translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Unused uint16_t=</source>
+        <translation>[XML ПАРСЕР]Неиспользуемая uint16_t=</translation>
+    </message>
 </context>
 <context>
     <name>semaphorClass</name>

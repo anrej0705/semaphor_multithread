@@ -347,7 +347,7 @@ uint8_t semaphor::get_cycle_timer_value()
 void semaphor::run_thread()
 {
 	//Задержка запуска, для того чтобы всё зависящее успело инициализироваться
-	boost::this_thread::sleep_for(boost::chrono::microseconds(927));
+	boost::this_thread::sleep_for(boost::chrono::microseconds(2927));
 
 	//QString logout;
 	uint16_t cycle_cnt = 0;

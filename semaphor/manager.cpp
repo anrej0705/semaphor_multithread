@@ -733,7 +733,7 @@ bool semaphor_manager::query_transit(uint16_t sender_id)
 void semaphor_manager::add_semaphor_to_map(boost::container::vector<uint16_t> map)
 {
 	semaphor_map->insert(std::pair(semaphors_map_size, map));
-	semaphor_gui::getInstance().slot_post_console_msg("[LOG]Import semaphor list");
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG]Import semaphor list"));
 	//qDebug() << "[LOG]Import semaphor list";
 	for (uint8_t a = 0; a < static_cast<uint8_t>(map.size()); ++a)
 	{

@@ -83,6 +83,10 @@
         <source>Speed</source>
         <translation>Скорость</translation>
     </message>
+    <message>
+        <source>[LOG]Import semaphor list</source>
+        <translation>[ИМПОРТ]Импортирую список соседей</translation>
+    </message>
 </context>
 <context>
     <name>semaphorClass</name>

@@ -223,7 +223,7 @@ void semaphor::set_name(std::string name)
 //Читает команду от менеджера(поле volatile) и выполняет
 void semaphor::read_manager_command()
 {
-	QString logout;
+	//QString logout;
 	switch (manager_query_code)
 	{
 		case 0x00:
@@ -302,7 +302,7 @@ void semaphor::read_manager_command()
 			break;
 		}
 	}
-	logout.clear();
+	//logout.clear();
 }
 
 //Скопировать график себе посекционно
@@ -346,6 +346,9 @@ uint8_t semaphor::get_cycle_timer_value()
 //Основной поток светофора
 void semaphor::run_thread()
 {
+	//Задержка запуска, для того чтобы всё зависящее успело инициализироваться
+	boost::this_thread::sleep_for(boost::chrono::microseconds(927));
+
 	//QString logout;
 	uint16_t cycle_cnt = 0;
 	uint16_t timer = 0;
@@ -353,7 +356,7 @@ void semaphor::run_thread()
 	{
 		//qDebug() << "[THREAD" << QString::number(myId) << "]Cycle" << cycle_cnt;
 
-		boost::this_thread::sleep_for(boost::chrono::milliseconds(42+cycle_speed));
+		boost::this_thread::sleep_for(boost::chrono::milliseconds(cycle_speed));
 		//Читаем команду полученную от менеджера
 		read_manager_command();
 

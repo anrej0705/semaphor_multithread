@@ -2,7 +2,7 @@
 <__Shani_basic>
  <Settings attr="uint16_t">
   <param>semaphor_speed_cycle</param>
-  <value>420</value>
+  <value>42</value>
  </Settings>
  <Settings attr="uint16_t">
   <param>generator_speed_cycle</param>

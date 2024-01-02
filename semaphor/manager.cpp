@@ -335,7 +335,7 @@ void semaphor_manager::run_manager()
 //Менеджер
 void semaphor_manager::queueManager()
 {
-	boost::this_thread::sleep_for(boost::chrono::milliseconds(150));
+	boost::this_thread::sleep_for(boost::chrono::milliseconds(250));
 	read_xml();
 	uint8_t cycle_cnt = 0;
 	while (1)
@@ -717,7 +717,7 @@ void semaphor_manager::stop_generator()
 
 void semaphor_manager::set_semaphor_speed(uint16_t speed)
 {
-	semaphor_speed = speed;
+	semaphor_speed = semaphor_timer_speed+speed;
 	semaphor_request(SET_CYCLE_SPEED);
 }
 
@@ -769,7 +769,7 @@ void semaphor_manager::read_xml()
 			//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 			if (xml_set.name() == "__Shani_basic")
 			{
-				qDebug() << "Settings signature" << xml_set.name();
+				qDebug() << "Settings signature" << xml_set.name() << "VALID";
 				while (!xml_set.atEnd() && !xml_set.hasError())
 				{
 					//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();

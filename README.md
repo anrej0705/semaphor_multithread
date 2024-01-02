@@ -1,13 +1,15 @@
-# Semaphors v 1.1
+# Semaphors v 1.1a
 
 ![Qt](https://img.shields.io/badge/Qt-%23217346.svg?style=for-the-badge&logo=Qt&logoColor=white)
 ![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![MSVC](https://img.shields.io/badge/Visual_Studio-5C2D91?style=for-the-badge&logo=visual%20studio&logoColor=white)
+[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
-**|Qt 5.14.2
-|C++17
-|MSVC 2019
-|Boost 1.84.00|**
+**| Qt 5.14.2 
+| C++17 
+| MSVC 2019 
+| Boost 1.84.00
+| GPL v2 license |**
 
 Программа моделирует движение на перекрестке по упрощённой модели. Светофоры работают каждый в своей зоне - принадлежность светофоров к зоне можно увидеть в таблице ниже(столбцы - зоны, строки - светофоры)
 
@@ -36,7 +38,7 @@
 |1|X|||X||X|
 |2||X|X||X||
 
-Если на схеме, то это будет выглядеть вот так:
+Если показать на схеме, то это будет выглядеть вот так:
 
 
 [![FastPic.Ru](https://i122.fastpic.org/thumb/2023/1231/b5/_f114ec7c13e1af6cd88f2c6239308bb5.jpeg)](https://fastpic.org/view/122/2023/1231/_f114ec7c13e1af6cd88f2c6239308bb5.png.html)
@@ -94,3 +96,51 @@
 или светофоры по отдельности - можно увидеть из скрина снизу
 
 [![FastPic.Ru](https://i122.fastpic.org/thumb/2024/0101/08/b90a9a919355ed73021ed3110ccfde08.jpeg)](https://fastpic.org/view/122/2024/0101/b90a9a919355ed73021ed3110ccfde08.png.html)
+
+### Дополнительный настройки
+
+С версии 1.1a стала доступна возможность изменять некоторые настройки программы, не отображающиеся в окне. Для этого следует открыть файл ```param.xml```(если его нет то запустите
+программу и он сгенерируется). Структура файла выглядит следующим образом:
+
+```
+<!DOCTYPE __Shani_basic>
+<__Shani_basic>
+ <Settings attr="uint16_t">
+  <param>semaphor_speed_cycle</param>
+  <value>42</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>generator_speed_cycle</param>
+  <value>4</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>manager_speed_cycle</param>
+  <value>10</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>gui_refresh_cycle</param>
+  <value>50</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>gui_refresh_interval</param>
+  <value>65535</value>
+ </Settings>
+</__Shani_basic>
+
+```
+
+``` __Shani_basic ``` - Сигнатура по которой программа определяет что открыт файл содержащий её настройки
+
+``` uint16_t ``` - Указывает на тип данных - unsigned 16 bit int с диапазоном значений от 0 до 65535
+
+``` semaphor_speed_cycle ``` - Установка длительности цикла для светофоров. Стандартное значение составляет **42 мс**. Не рекомендуется устаналивать более низкие значения - это может
+привести к багам в работе или "зависанию" потока
+
+``` generator_speed_cycle ``` - Установка длительности цикла для генератора. Стандартное значение **4 мс**. Не рекомендуется выставлять 0.
+
+``` manager_speed_cycle ``` - Установка цикла для менеджера. Стандартное значение **10 мс**. Рекомендуемый минимум 2 мс.
+
+``` gui_refresh_cycle ``` - Установка частоты обновления графического интерфейса. Стандартное значение **50 мс** что составляет 20 гц. Не рекомендуется к изменению - может привести
+к багам либо тормозам интерфейса
+
+``` gui_refresh_interval ``` - Не используемый в данный момент параметр

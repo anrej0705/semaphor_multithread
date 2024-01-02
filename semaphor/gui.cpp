@@ -194,7 +194,8 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	hLay->addWidget(control_panel);
 	this->setLayout(hLay);
 	this->move(60, 100);
-	this->resize(1600, 768);
+	//this->resize(1600, 768);
+	this->setFixedSize(1600, 791);
 	for(uint8_t a=0;a<12;++a)
 		s_graph[a] = new semaphor_graphic(this, 0, 0);
 	//semaphor_graphic* red = new semaphor_graphic(this, 486, 288);
@@ -537,6 +538,7 @@ semaphor_graphic::semaphor_graphic(QWidget* qwgt) : QWidget(qwgt)
 	s_coord->setY(0);
 	myState = 0;
 	paint_g = 0;
+	myId = 0;
 }
 
 semaphor_graphic::semaphor_graphic(QWidget* qwgt, int16_t xC, int16_t yC) : QWidget(qwgt)
@@ -546,6 +548,7 @@ semaphor_graphic::semaphor_graphic(QWidget* qwgt, int16_t xC, int16_t yC) : QWid
 	s_coord->setY(yC);
 	myState = 0;
 	paint_g = 0;
+	myId = 0;
 	//semaphor_gui::getInstance().slot_post_console_msg("[GUI]Set semaphor coord X=" + QString::number(s_coord->x()) + " Y=" + QString::number(s_coord->y()));
 }
 

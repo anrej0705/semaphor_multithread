@@ -25,7 +25,7 @@
     </message>
     <message>
         <source>Set</source>
-        <translation>Уст</translation>
+        <translation>Доб</translation>
     </message>
     <message>
         <source>[GUI PANEL ID</source>

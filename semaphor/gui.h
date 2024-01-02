@@ -134,6 +134,8 @@ class semaphor_slot : public QGroupBox
 
 		QTextEdit* multi_queue;	//Поле ввода пользователем
 
+		QCheckBox* lan_connect;
+
 		QLabel* id;		//ИД светофора
 		QLabel* queue;	//Счетчик очереди
 		QLabel* color;	//Цвет(сигнал)

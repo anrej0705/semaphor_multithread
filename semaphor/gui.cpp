@@ -398,6 +398,12 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 
 	color->setAutoFillBackground(1);
 
+	lan_connect = new QCheckBox("LAN");
+
+	//Пока что отключаем, до введения функционала
+	lan_connect->setCheckable(0);
+	lan_connect->setChecked(0);
+
 	multi_queue = new QTextEdit("5");
 	multi_queue->setAlignment(Qt::AlignCenter);
 
@@ -413,8 +419,8 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 	btn_increment->setAutoFillBackground(1);
 	btn_decrement->setAutoFillBackground(1);
 
-	btn_increment->setFixedHeight(32);
-	btn_decrement->setFixedHeight(32);
+	btn_increment->setFixedHeight(28);
+	btn_decrement->setFixedHeight(28);
 
 	id_box_layout->addWidget(id);
 	queue_box_layout->addWidget(queue);
@@ -427,10 +433,11 @@ semaphor_slot::semaphor_slot(QWidget* qwgt) : QGroupBox(qwgt)
 	color_box->setLayout(color_box_layout);
 	multi_queue_box->setLayout(multi_queue_box_layout);
 
-	id_box->setFixedHeight(48);
-	queue_box->setFixedHeight(48);
-	color_box->setFixedHeight(40);
+	id_box->setFixedHeight(42);
+	queue_box->setFixedHeight(42);
+	color_box->setFixedHeight(36);
 
+	slot_module->addWidget(lan_connect);
 	slot_module->addWidget(id_box);
 	slot_module->addWidget(queue_box);
 	slot_module->addWidget(color_box);

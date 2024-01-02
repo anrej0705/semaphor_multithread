@@ -1,0 +1,4 @@
+<RCC>
+    <qresource prefix="semaphor_tcp_server">
+    </qresource>
+</RCC>

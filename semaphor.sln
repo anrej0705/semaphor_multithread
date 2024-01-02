@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.34301.259
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "semaphor", "semaphor\semaphor.vcxproj", "{80EFE027-CB75-41D9-A304-F0D08C7B7670}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "semaphor_tcp_server", "semaphor_tcp_server\semaphor_tcp_server.vcxproj", "{F82485E6-028D-4192-BB5D-9E38B86F42A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +17,10 @@ Global
 		{80EFE027-CB75-41D9-A304-F0D08C7B7670}.Debug|x86.Build.0 = Debug|Win32
 		{80EFE027-CB75-41D9-A304-F0D08C7B7670}.Release|x86.ActiveCfg = Release|Win32
 		{80EFE027-CB75-41D9-A304-F0D08C7B7670}.Release|x86.Build.0 = Release|Win32
+		{F82485E6-028D-4192-BB5D-9E38B86F42A1}.Debug|x86.ActiveCfg = Debug|Win32
+		{F82485E6-028D-4192-BB5D-9E38B86F42A1}.Debug|x86.Build.0 = Debug|Win32
+		{F82485E6-028D-4192-BB5D-9E38B86F42A1}.Release|x86.ActiveCfg = Release|Win32
+		{F82485E6-028D-4192-BB5D-9E38B86F42A1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -91,12 +91,16 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 	slider_lay->addWidget(gen_rate_slider);
 	slider_lay->addWidget(slider_indicator);
 	int nBtnWidth = generator_module->width();
+
+	//Параметры кнопки подобраны чтобы она вписывалась в рамку
 	QRect rect1(10, 66, nBtnWidth/2, generator_module->height()-76);
 	mode_dis->assignProperty(mode_switcher, "geometry", rect1);
 	mode_dis->assignProperty(lbl_dis, "visible", 1);
 	mode_dis->assignProperty(lbl_en, "visible", 0);
 	generator_mode->setInitialState(mode_dis);
-	QRect rect2(nBtnWidth/2+214, 66, nBtnWidth/2-10, generator_module->height()-76);
+
+	//Параметры кнопки подобраны чтобы она вписывалась в рамку
+	QRect rect2(nBtnWidth/2+146, 66, nBtnWidth/2-10, generator_module->height()-76);
 	mode_en->assignProperty(mode_switcher, "geometry", rect2);
 	mode_en->assignProperty(lbl_dis, "visible", 0);
 	mode_en->assignProperty(lbl_en, "visible", 1);

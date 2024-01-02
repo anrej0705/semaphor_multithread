@@ -208,6 +208,8 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 
 	//Загружаем прочитанное из xml значение
 	refresh_interval = semaphor_manager::getInstance().read_update_interval_period();
+
+	this->setWindowIcon(QPixmap("icon.ico"));
 }
 
 semaphor_gui::~semaphor_gui()

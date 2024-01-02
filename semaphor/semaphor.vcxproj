@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="tcp_client.h" />
     <QtMoc Include="gui.h" />
     <ClInclude Include="manager.h" />
@@ -137,6 +138,13 @@
   <ItemGroup>
     <QtTranslation Include="semaphor_ru_RU.ts" />
     <QtTranslation Include="semaphor_ru_UA.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="semaphor.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.bmp" />
+    <Image Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

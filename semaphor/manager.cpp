@@ -874,6 +874,7 @@ void semaphor_manager::read_xml()
 				}
 			}
 		}
+		xml_set_file->close();
 	}
 	else //Если файла не существует то создаем и сохраняем настройк по умолчанию
 	{

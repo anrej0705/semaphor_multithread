@@ -876,6 +876,7 @@ void semaphor_manager::read_xml()
 	}
 	else //Если файла не существует то создаем и сохраняем настройк по умолчанию
 	{
+		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]XML file not found. Making new"));
 		xml_set_document = new QDomDocument("__Shani_basic");;
 		QDomElement xml_set_element = xml_set_document->createElement("__Shani_basic");
 		xml_set_document->appendChild(xml_set_element);

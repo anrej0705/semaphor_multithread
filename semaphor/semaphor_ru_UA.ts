@@ -89,7 +89,7 @@
     </message>
     <message>
         <source>[XML PARSER]Load XML</source>
-        <translation>[ПАРСЕР XML]Загружаю XML конфиг</translation>
+        <translation>[XML ПАРСЕР]Загружаю XML конфиг</translation>
     </message>
     <message>
         <source>[XML PARSER]Setting file signature [</source>
@@ -101,7 +101,7 @@
     </message>
     <message>
         <source>[XML PARSER]Set semaphor thread speed </source>
-        <translation>[XML парсер]Задаю длт. цикла светофоров </translation>
+        <translation>[XML ПАРСЕР]Задаю длт. цикла светофоров </translation>
     </message>
     <message>
         <source> ms</source>
@@ -122,6 +122,10 @@
     <message>
         <source>[XML PARSER]Unused uint16_t=</source>
         <translation>[XML ПАРСЕР]Неиспользуемая uint16_t=</translation>
+    </message>
+    <message>
+        <source>[MANAGER]XML file not found. Making new</source>
+        <translation>[МЕНЕДЖЕР]Файл настроек XML не найден. Создаю новый</translation>
     </message>
 </context>
 <context>

@@ -320,7 +320,10 @@ void semaphor::calc_query_cycle()
 			break;
 		}
 		else if (queue == 0)
+		{
 			cycle_timer = polling_graph->at(0).second;
+			break;
+		}
 	}
 	//qDebug() << "[THREAD, Semaphor id" << QString::number(myId) << "]Set cycle length" << QString::number(cycle_timer) << "times";
 }

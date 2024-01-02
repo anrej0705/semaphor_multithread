@@ -787,7 +787,10 @@ void semaphor_manager::calc_udpate_cycle()
 			break;
 		}
 		else if (max_queue == 0)
+		{
 			manager_cycle = polling_graph->at(0).second;
+			break;
+		}
 	}
 	//qDebug() << "[LOG]Cycle length" << QString::number(cycle_length);
 }

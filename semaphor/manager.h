@@ -87,57 +87,57 @@ class semaphor_manager
 		void create_semaphor();
 		void add_semaphor(uint16_t);
 		void print_sem_list();
-		uint8_t read_s_state(uint16_t);
+		uint8_t read_s_state(const uint16_t&);
 
 		//Сохранить своё состояние(светофор->менеджер)
-		void load_s_state(uint16_t, uint8_t);
+		void load_s_state(const uint16_t&, uint8_t);
 
 		//Сохранить счетчик очереди
-		void load_s_queue(uint16_t, uint16_t);
+		void load_s_queue(const uint16_t&, uint16_t);
 
 		//Управление потоком
-		void disallowTransit(uint16_t);
-		void allowTransit(uint16_t);
+		void disallowTransit(const uint16_t&);
+		void allowTransit(const uint16_t&);
 
 		//Установка соседей
-		void set_neighbour(uint16_t target_sem, boost::container::vector<uint16_t> &n_id);
+		void set_neighbour(const uint16_t& target_sem, boost::container::vector<uint16_t> &n_id);
 
 		//Запрос состояния соседа
-		uint8_t get_neighbour_state(uint16_t);
+		uint8_t get_neighbour_state(const uint16_t&);
 
 		//Добавить очередь перед светофором
-		void addSemaphorQueue(uint16_t);
-		void addSemaphorQueue(uint16_t, uint8_t);
+		void addSemaphorQueue(const uint16_t&);
+		void addSemaphorQueue(const uint16_t&, uint8_t);
 
 		//Увеличить очередь перед светофором на 1
-		void increment_semaphor_queue(uint16_t);
+		void increment_semaphor_queue(const uint16_t&);
 
 		//Уменьшить очередь перед светофором на 1
-		void decrement_semaphor_queue(uint16_t);
+		void decrement_semaphor_queue(const uint16_t&);
 
 		//Генератор очередей перед светофором
-		void run_queue_generator(bool mode);
+		void run_queue_generator(const bool& mode);
 
 		//Менеджер светофоров
 		void run_manager();
 
 		//Запрос состояния конкретного светофора
-		uint8_t semaphor_request(uint16_t sem_id, uint8_t code);
+		uint8_t semaphor_request(const uint16_t& sem_id, uint8_t code);
 		
 		//Общий запрос всем светофорам
 		void semaphor_request(uint8_t code);
 
 		//Отправка команды конкретному светоформу
-		bool send_command_to_target_semaphor(uint16_t sem_id, uint8_t code);
+		bool send_command_to_target_semaphor(const uint16_t& sem_id, uint8_t code);
 
 		//Просчет очереди на пропуск авто
 		void calc_transit_priority();
 
 		//Установка имени светофора
-		void set_semaphor_name(uint16_t sem_id, std::string name);
+		void set_semaphor_name(const uint16_t& sem_id, std::string name);
 
 		//Рассчитываем порядок проезда
-		bool query_transit(uint16_t sender_id);
+		bool query_transit(const uint16_t& sender_id);
 
 		//Добавляем светофоры в карту
 		void add_semaphor_to_map(boost::container::vector<uint16_t> map);
@@ -152,7 +152,7 @@ class semaphor_manager
 		void calc_udpate_cycle();
 
 		//Копируем график в светофор
-		void copy_polling_graph(uint16_t sem_id);
+		void copy_polling_graph(const uint16_t& sem_id);
 
 		//Останавливаем потоки
 		void stop_all_threads();

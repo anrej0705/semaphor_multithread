@@ -112,7 +112,7 @@ void semaphor_manager::add_semaphor(uint16_t sem_id)
 /Сохраняет состояние светофора у себя. Светофор может после этого сразу поменять своё состояние
 /Но менеджер будет хранить старое состояние до востребования нового
 /*/
-void semaphor_manager::load_s_state(uint16_t sem_id, uint8_t s_state)
+void semaphor_manager::load_s_state(const uint16_t& sem_id, uint8_t s_state)
 {
 	THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -161,7 +161,7 @@ void semaphor_manager::print_sem_list()
 /*/
 /Возврат последнего записанного в собственную базу состояния светофора
 /*/
-uint8_t semaphor_manager::read_s_state(uint16_t sem_id)
+uint8_t semaphor_manager::read_s_state(const uint16_t& sem_id)
 {
 	THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -202,7 +202,7 @@ void semaphor_manager::create_semaphor()
 
 //Управление потоком машин
 //Запрет или разрешение
-void semaphor_manager::allowTransit(uint16_t sem_id)
+void semaphor_manager::allowTransit(const uint16_t& sem_id)
 {
 	//std::lock_guard<std::mutex> lg(m_mut);
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -212,7 +212,7 @@ void semaphor_manager::allowTransit(uint16_t sem_id)
 	//condition.notify_all();
 	//ul.unlock();
 }
-void semaphor_manager::disallowTransit(uint16_t sem_id)
+void semaphor_manager::disallowTransit(const uint16_t& sem_id)
 {
 	//std::lock_guard<std::mutex> lg(m_mut);
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -224,7 +224,7 @@ void semaphor_manager::disallowTransit(uint16_t sem_id)
 }
 
 //Добавить +1 к очереди машин перед светофором выбранному по ИД
-void semaphor_manager::addSemaphorQueue(uint16_t sem_id)
+void semaphor_manager::addSemaphorQueue(const uint16_t& sem_id)
 {
 	//semaphor_gui::getInstance().slot_post_console_msg("[MANAGER]Increment queue to id " + QString::number(sem_id));
 	//qDebug() << "[LOG] Increment semaphor id =" << sem_id << "queue +1";
@@ -232,7 +232,7 @@ void semaphor_manager::addSemaphorQueue(uint16_t sem_id)
 }
 
 //Добавить очередь из 2 и более машин перед светофром с выбранным ИД
-void semaphor_manager::addSemaphorQueue(uint16_t sem_id, uint8_t q_size)
+void semaphor_manager::addSemaphorQueue(const uint16_t& sem_id, uint8_t q_size)
 {
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Set queue size ") + QString::number(q_size));
 	//qDebug() << "[LOG] Increment semaphor id =" << sem_id << "queue +=" << q_size;
@@ -242,7 +242,7 @@ void semaphor_manager::addSemaphorQueue(uint16_t sem_id, uint8_t q_size)
 /*
 * Добавить/убавить очередь машина на 1 перед светофром с выбранным ИД
 */
-void semaphor_manager::decrement_semaphor_queue(uint16_t sem_id)
+void semaphor_manager::decrement_semaphor_queue(const uint16_t& sem_id)
 {
 	if (s_list[sem_id]->queue == 0)	//Если машин нету то выходим сразу
 		return;
@@ -251,7 +251,7 @@ void semaphor_manager::decrement_semaphor_queue(uint16_t sem_id)
 	s_list[sem_id]->queue--;
 }
 
-void semaphor_manager::increment_semaphor_queue(uint16_t sem_id)
+void semaphor_manager::increment_semaphor_queue(const uint16_t& sem_id)
 {
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[MANAGER]Increment queue to id ") + QString::number(sem_id) + "(" + QString::number(s_list[sem_id]->queue) + " -> " + QString::number(s_list[sem_id]->queue+1) + ")");
 	//qDebug() << "[LOG]Increment semaphor id =" << sem_id << "queue +1";
@@ -263,7 +263,7 @@ void semaphor_manager::increment_semaphor_queue(uint16_t sem_id)
 * 
 * Светофор будет ориентироваться на показания соседей чтобы принять решение - пропустить или не пропускать машину/пешехода
 */
-void semaphor_manager::set_neighbour(uint16_t target_sem, boost::container::vector<uint16_t>& n_id)
+void semaphor_manager::set_neighbour(const uint16_t& target_sem, boost::container::vector<uint16_t>& n_id)
 {
 	for (uint8_t a = 0; a < static_cast<uint8_t>(n_id.size()); ++a)
 	{
@@ -273,13 +273,13 @@ void semaphor_manager::set_neighbour(uint16_t target_sem, boost::container::vect
 }
 
 //Запрашиваем состояние у светофора и возвращаем ответ
-uint8_t semaphor_manager::get_neighbour_state(uint16_t n_id)
+uint8_t semaphor_manager::get_neighbour_state(const uint16_t& n_id)
 {
 	return s_list[n_id]->get_reg_state();
 }
 
 //Запускаем генератор очередей в отдельном потоке
-void semaphor_manager::run_queue_generator(bool mode)
+void semaphor_manager::run_queue_generator(const bool& mode)
 {
 	if (mode)
 	{
@@ -456,7 +456,7 @@ void semaphor_manager::calc_transit_priority()
 }
 
 //Генератор запроса для светофора
-uint8_t semaphor_manager::semaphor_request(uint16_t sem_id, uint8_t code)
+uint8_t semaphor_manager::semaphor_request(const uint16_t& sem_id, uint8_t code)
 {
 	//THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -502,7 +502,7 @@ void semaphor_manager::semaphor_request(uint8_t code)
 }
 
 //Сохраняет счетчик очереди светофора, вызвавшего этот метод
-void semaphor_manager::load_s_queue(uint16_t sem_id, uint16_t queue_size)
+void semaphor_manager::load_s_queue(const uint16_t& sem_id, uint16_t queue_size)
 {
 	//qDebug() << "[MANAGER]Semaphor id =" << QString::number(sem_id) << " queue size =" << QString::number(queue_size);
 	//THREAD_LOCK
@@ -528,7 +528,7 @@ void semaphor_manager::load_s_queue(uint16_t sem_id, uint16_t queue_size)
 }
 
 //Аналогично запросу выше
-bool semaphor_manager::send_command_to_target_semaphor(uint16_t sem_id, uint8_t code)
+bool semaphor_manager::send_command_to_target_semaphor(const uint16_t &sem_id, uint8_t code)
 {
 	//THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -552,7 +552,7 @@ bool semaphor_manager::send_command_to_target_semaphor(uint16_t sem_id, uint8_t 
 }
 
 //Задать имя светофору(имя показывается в логах бекенда)
-void semaphor_manager::set_semaphor_name(uint16_t sem_id, std::string name)
+void semaphor_manager::set_semaphor_name(const uint16_t &sem_id, std::string name)
 {
 	//THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -575,7 +575,7 @@ void semaphor_manager::set_semaphor_name(uint16_t sem_id, std::string name)
 }
 
 //Запросить разрешение на проезд(отсылается светофором)
-bool semaphor_manager::query_transit(uint16_t sender_id)
+bool semaphor_manager::query_transit(const uint16_t& sender_id)
 {
 	if (queue_list->size() == 0)
 		return 0;
@@ -670,7 +670,7 @@ void semaphor_manager::calc_udpate_cycle()
 }
 
 //Скопировать график зависимостей частоты от машин заданному светофору
-void semaphor_manager::copy_polling_graph(uint16_t sem_id)
+void semaphor_manager::copy_polling_graph(const uint16_t& sem_id)
 {
 	THREAD_LOCK
 

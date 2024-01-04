@@ -240,7 +240,7 @@ void semaphor_gui::add_slot(uint16_t sem_id)
 }
 
 //Поток вызывает этот метод чтобы передать информацию о состоянии очереди
-void semaphor_gui::write_queue_cnt(uint16_t sem_id, uint16_t queue_cnt)
+void semaphor_gui::write_queue_cnt(const uint16_t& sem_id, uint16_t queue_cnt)
 {
 	//THREAD_LOCK
 	//qDebug() << "[GUI]Write queue size" << QString::number(queue_cnt) << "to panel id" << QString::number(sem_id);
@@ -299,7 +299,7 @@ void semaphor_gui::gui()
 }
 
 //Записывает флаг состояния светофора(красный или зелёный), вызывается потоком
-void semaphor_gui::set_signal(uint16_t sem_id, bool signal)
+void semaphor_gui::set_signal(const uint16_t& sem_id, bool signal)
 {
 	//Упрощенная реализация. В более сложной модели потребуется замена вектора на карту либо вектор + std::pair
 	//THREAD_LOCK
@@ -364,7 +364,7 @@ void semaphor_gui::switch_generator_mode()
 }
 
 //Добавляет графическое представление светофора с привязкой к ИД на карту
-void semaphor_gui::add_graphic_semaphor(uint16_t sem_id, std::pair<int16_t, int16_t> sem_coord)
+void semaphor_gui::add_graphic_semaphor(const uint16_t& sem_id, std::pair<int16_t, int16_t> sem_coord)
 {
 	s_graph[sem_id]->set_coord(sem_coord.first, sem_coord.second);
 	//s_graph[sem_id]->set_state(1);

@@ -100,10 +100,10 @@ class semaphor_gui : public QWidget
 	public:
 		static semaphor_gui& getInstance();
 		void add_slot(uint16_t sem_id);
-		void add_graphic_semaphor(uint16_t sem_id, std::pair<int16_t, int16_t>);
-		void write_queue_cnt(uint16_t sem_id, uint16_t queue_cnt);
+		void add_graphic_semaphor(const uint16_t& sem_id, std::pair<int16_t, int16_t>);
+		void write_queue_cnt(const uint16_t& sem_id, uint16_t queue_cnt);
 		void write_table_content(uint8_t section_num, uint8_t row_num, uint16_t arg);
-		void set_signal(uint16_t sem_id, bool signal);
+		void set_signal(const uint16_t& sem_id, bool signal);
 		void run_gui();
 		void gui();
 		void closeEvent(QCloseEvent* ce);

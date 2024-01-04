@@ -528,7 +528,7 @@ void semaphor_manager::load_s_queue(const uint16_t& sem_id, uint16_t queue_size)
 }
 
 //Аналогично запросу выше
-bool semaphor_manager::send_command_to_target_semaphor(const uint16_t &sem_id, uint8_t code)
+bool semaphor_manager::send_command_to_target_semaphor(const uint16_t &sem_id, const uint8_t& code)
 {
 	//THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -543,7 +543,7 @@ bool semaphor_manager::send_command_to_target_semaphor(const uint16_t &sem_id, u
 	}
 	THREAD_LOCK
 	uint16_t index = std::distance(s_id->begin(), it);
-	s_list[index]->manager_query_code = code;
+	s_list[index]->manager_query_code = std::move(code);	//C26478 это баг!
 
 	//m_mut.unlock();
 	NOTIFY_ALL_THREAD
@@ -552,7 +552,7 @@ bool semaphor_manager::send_command_to_target_semaphor(const uint16_t &sem_id, u
 }
 
 //Задать имя светофору(имя показывается в логах бекенда)
-void semaphor_manager::set_semaphor_name(const uint16_t &sem_id, std::string name)
+void semaphor_manager::set_semaphor_name(const uint16_t &sem_id, const std::string& name)
 {
 	//THREAD_LOCK
 	//std::unique_lock<std::mutex> ul(m_mut);
@@ -567,7 +567,7 @@ void semaphor_manager::set_semaphor_name(const uint16_t &sem_id, std::string nam
 	}
 	THREAD_LOCK
 	uint16_t index = std::distance(s_id->begin(), it);
-	s_list[index]->set_name(name);
+	s_list[index]->set_name(std::move(name));
 
 	//m_mut.unlock();
 	NOTIFY_ALL_THREAD
@@ -604,37 +604,37 @@ bool semaphor_manager::query_transit(const uint16_t& sender_id)
 }
 
 //Добавить светофор в зону
-void semaphor_manager::add_semaphor_to_map(boost::container::vector<uint16_t> map)
+void semaphor_manager::add_semaphor_to_map(const boost::container::vector<uint16_t>& map)
 {
-	semaphor_map->insert(std::pair(semaphors_map_size, map));
+	semaphor_map->insert(std::pair(semaphors_map_size, std::move(map)));
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG]Import semaphor list"));
 	//qDebug() << "[LOG]Import semaphor list";
 	for (uint8_t a = 0; a < static_cast<uint8_t>(map.size()); ++a)
 	{
-		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[VECTOR]Semaphor id = ") + QString::number(map[a]).leftJustified(2, ' ') + QObject::tr(" zone = ") + QString::number(semaphors_map_size).leftJustified(2, ' '));
+		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[VECTOR]Semaphor id = ") + QString::number(std::move(map[a])).leftJustified(2, ' ') + QObject::tr(" zone = ") + QString::number(semaphors_map_size).leftJustified(2, ' '));
 		//qDebug() << "[VECTOR]Semaphor id =" << QString::number(map[a]).leftJustified(2, ' ') << "zone =" << QString::number(semaphors_map_size).leftJustified(2, ' ');
 	}
 	++semaphors_map_size;
 }
 
 //Настройка списка одновременно разрешенных к проезду зон
-void semaphor_manager::add_parallel_zones(boost::container::vector<uint8_t> zone_lst)
+void semaphor_manager::add_parallel_zones(const boost::container::vector<uint8_t>& zone_lst)
 {
 	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[LOG]Add zone list"));
 	//qDebug() << "[LOG]Add zone list";
 	for (uint8_t a = 0; a < zone_lst.size(); ++a)
 	{
-		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[IMPORT] import zone") + QString::number(zone_lst[a]));
+		semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[IMPORT] import zone") + QString::number(std::move(zone_lst[a])));
 		//qDebug() << "[IMPORT] import zone" << QString::number(zone_lst[a]);
 	}
-	zone_list->push_back(zone_lst);
+	zone_list->push_back(std::move(zone_lst));
 }
 
 //Настройка частоты опроса менеджера в зависимости от очереди автомобилей перед светофором
-void semaphor_manager::set_polling_graph(std::pair<uint8_t, uint8_t> section)
+void semaphor_manager::set_polling_graph(const std::pair<uint8_t, uint8_t>& section)
 {
 	//qDebug() << "[LOG]Add section {" << QString::number(section.first) << QString::number(section.second) << "}";
-	polling_graph->push_back(std::pair<uint8_t,uint8_t>(section.first,section.second));
+	polling_graph->push_back(std::move(std::pair<uint8_t,uint8_t>(section.first,section.second)));
 }
 
 //Рассчет цикла опроса светофоров исходя из зависимости "колво машин <-> частота опроса"
@@ -704,9 +704,9 @@ void semaphor_manager::stop_all_threads()
 }
 
 //Задать частоту генерации
-void semaphor_manager::set_gen_freq(int freq)
+void semaphor_manager::set_gen_freq(const int& freq)
 {
-	queue_delay = 167 - freq; //167 - минимальная частота, 0 - максимальная
+	queue_delay = 167 - std::move(freq); //167 - минимальная частота, 0 - максимальная
 }
 
 //Остановка генератора
@@ -715,9 +715,9 @@ void semaphor_manager::stop_generator()
 	generator_mode = 0;
 }
 
-void semaphor_manager::set_semaphor_speed(uint16_t speed)
+void semaphor_manager::set_semaphor_speed(const uint16_t& speed)
 {
-	semaphor_speed = semaphor_timer_speed+speed;
+	semaphor_speed = semaphor_timer_speed+std::move(speed);
 	semaphor_request(SET_CYCLE_SPEED);
 }
 

@@ -128,25 +128,25 @@ class semaphor_manager
 		void semaphor_request(uint8_t code);
 
 		//Отправка команды конкретному светоформу
-		bool send_command_to_target_semaphor(const uint16_t& sem_id, uint8_t code);
+		bool send_command_to_target_semaphor(const uint16_t& sem_id, const uint8_t& code);
 
 		//Просчет очереди на пропуск авто
 		void calc_transit_priority();
 
 		//Установка имени светофора
-		void set_semaphor_name(const uint16_t& sem_id, std::string name);
+		void set_semaphor_name(const uint16_t& sem_id, const std::string& name);
 
 		//Рассчитываем порядок проезда
 		bool query_transit(const uint16_t& sender_id);
 
 		//Добавляем светофоры в карту
-		void add_semaphor_to_map(boost::container::vector<uint16_t> map);
+		void add_semaphor_to_map(const boost::container::vector<uint16_t>& map);
 
 		//Добавляем список одновременно разрешенных зон
-		void add_parallel_zones(boost::container::vector<uint8_t> zone_lst);
+		void add_parallel_zones(const boost::container::vector<uint8_t>& zone_lst);
 
 		//Задаем график зависимости очередь<->частота опроса
-		void set_polling_graph(std::pair<uint8_t, uint8_t>);
+		void set_polling_graph(const std::pair<uint8_t, uint8_t>&);
 
 		//Подсчитываем количество циклов обновления исходя из загруженности
 		void calc_udpate_cycle();
@@ -158,13 +158,13 @@ class semaphor_manager
 		void stop_all_threads();
 
 		//Записываем частоту генератора
-		void set_gen_freq(int freq);
+		void set_gen_freq(const int& freq);
 
 		//Останавливаем генератор
 		void stop_generator();
 
 		//Задаем скорость работы светофров
-		void set_semaphor_speed(uint16_t speed);
+		void set_semaphor_speed(const uint16_t& speed);
 
 		//Генератор XML документа
 		QDomElement parametr(QDomDocument& d_doc, const QString& param_name, const QString& param_value);

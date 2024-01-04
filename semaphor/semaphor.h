@@ -40,11 +40,11 @@ class semaphor : public QWidget
 		semaphor();
 		~semaphor();
 		void run_thread();
-		void new_thread(uint16_t);
+		void new_thread(const uint16_t&);
 		void test_hello();
 
 		//Импорт соседа
-		void add_neighbour(uint16_t n_id);
+		void add_neighbour(const uint16_t& n_id);
 
 		//Для менеджера. Запрос состояния светофора
 		uint8_t get_reg_state();
@@ -59,13 +59,13 @@ class semaphor : public QWidget
 		void car_pass();
 
 		//Установка имени светофора
-		void set_name(std::string name);
+		void set_name(const std::string& name);
 
 		//Читаем команду от менеджера
 		void read_manager_command();
 
 		//Загружаем график частоты отправления запросов 
-		void set_polling_graph(std::pair<uint8_t, uint8_t>);
+		void set_polling_graph(const std::pair<uint8_t, uint8_t>&);
 
 		//Рассчитываем частоту опроса менеджера
 		void calc_query_cycle();

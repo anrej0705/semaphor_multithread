@@ -46,9 +46,9 @@ void semaphor::test_hello()
 }
 
 //Создать поток и запустить
-void semaphor::new_thread(uint16_t a)
+void semaphor::new_thread(const uint16_t& a)
 {
-	myId = a;
+	myId = std::move(a);
 	//qDebug() << "[THREAD]Creating a new semaphore-thread with id =" << myId;
 	sThread = new boost::thread(&semaphor::run_thread, this);
 	if (sThread->joinable())
@@ -56,10 +56,10 @@ void semaphor::new_thread(uint16_t a)
 }
 
 //Добавить соседа в список зависимостей(см описание в листинге менеджера)
-void semaphor::add_neighbour(uint16_t nb_id)
+void semaphor::add_neighbour(const uint16_t& nb_id)
 {
 	//qDebug() << "[THREAD]Adding new neighbour id =" << nb_id;
-	neighbour->push_back(nb_id);
+	neighbour->push_back(std::move(nb_id));
 	neighbout_reg_state.push_back(0x00);
 }
 
@@ -216,9 +216,9 @@ void semaphor::car_pass()
 }
 
 //Задать имя светофору(показывается в логах бекенда только)
-void semaphor::set_name(std::string name)
+void semaphor::set_name(const std::string& name)
 {
-	myName = name;
+	myName = std::move(name);
 }
 
 //Читает команду от менеджера(поле volatile) и выполняет
@@ -307,10 +307,10 @@ void semaphor::read_manager_command()
 }
 
 //Скопировать график себе посекционно
-void semaphor::set_polling_graph(std::pair<uint8_t, uint8_t> section)
+void semaphor::set_polling_graph(const std::pair<uint8_t, uint8_t>& section)
 {
 	//qDebug() << "[THREAD, Semaphor id" << QString::number(myId) << "]Add section{" << QString::number(section.first) << QString::number(section.second) << "}";
-	polling_graph->push_back(std::pair<uint8_t, uint8_t>(section.first, section.second));
+	polling_graph->push_back(std::move(std::pair<uint8_t, uint8_t>(section.first, section.second)));
 }
 
 //Расчет частоты опроса менеджера. Работает аналогично расчету в менеджере

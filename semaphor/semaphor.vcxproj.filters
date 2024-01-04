@@ -76,6 +76,9 @@
     <QtTranslation Include="semaphor_ru_RU.ts">
       <Filter>Translation Files</Filter>
     </QtTranslation>
+    <QtTranslation Include="semaphor_ru_BY.ts">
+      <Filter>Translation Files</Filter>
+    </QtTranslation>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="semaphor.rc">

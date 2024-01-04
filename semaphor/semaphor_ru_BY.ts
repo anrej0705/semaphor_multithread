@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.1" language="ru_BY">
 <context>
     <name>QObject</name>
+    <message>
+        <source>Semaphor speed in cycles</source>
+        <translation>Скорость работы светофоров(больше -&gt; меньше скорость)</translation>
+    </message>
+    <message>
+        <source>Speed</source>
+        <translation>Скорость</translation>
+    </message>
     <message>
         <source>[LOG]Stopping threads, moment...</source>
         <translation>[ЛОГ]Останавливаю потоки, подожди...</translation>
@@ -60,6 +68,10 @@
         <translation>[МЕНЕДЖЕР]Останавливаю поток менеджера</translation>
     </message>
     <message>
+        <source>[LOG]Import semaphor list</source>
+        <translation>[ИМПОРТ]Импортирую список соседей</translation>
+    </message>
+    <message>
         <source>[VECTOR]Semaphor id = </source>
         <translation>[ЛОГ]Светофор с ИД = </translation>
     </message>
@@ -74,18 +86,6 @@
     <message>
         <source>[IMPORT] import zone</source>
         <translation>[ИМПОРТ] импортирую зону</translation>
-    </message>
-    <message>
-        <source>Semaphor speed in cycles</source>
-        <translation>Скорость работы светофоров(больше -&gt; меньше скорость)</translation>
-    </message>
-    <message>
-        <source>Speed</source>
-        <translation>Скорость</translation>
-    </message>
-    <message>
-        <source>[LOG]Import semaphor list</source>
-        <translation>[ИМПОРТ]Импортирую список соседей</translation>
     </message>
     <message>
         <source>[XML PARSER]Load XML</source>

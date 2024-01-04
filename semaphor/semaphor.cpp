@@ -367,7 +367,7 @@ void semaphor::run_thread()
 	//boost::this_thread::sleep_for(boost::chrono::milliseconds(1927));
 	std::stringstream ss;
 	ss << s_t_id;
-	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[THREAD]Run thread id=0x") + QString::fromStdString(ss.str()).toUpper());
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[THREAD]Run thread ID=0x") + QString::fromStdString(ss.str()).toUpper());
 
 	while (1)
 	{

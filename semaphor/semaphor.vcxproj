@@ -136,6 +136,7 @@
     <QtMoc Include="semaphor.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtTranslation Include="semaphor_ru_BY.ts" />
     <QtTranslation Include="semaphor_ru_RU.ts" />
     <QtTranslation Include="semaphor_ru_UA.ts" />
   </ItemGroup>

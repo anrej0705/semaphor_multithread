@@ -68,7 +68,7 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 
 	semaphor_manager::getInstance().set_gen_freq(167-25);
 
-	this->setWindowTitle("Semaphors v1.1a");
+	this->setWindowTitle("Semaphors v1.1b");
 
 	semaphor_slots = new boost::container::vector<semaphor_slot*>;
 	//semaphor_graphic_arr = new boost::container::vector<semaphor_graphic*>;

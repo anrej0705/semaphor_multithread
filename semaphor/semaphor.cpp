@@ -51,6 +51,7 @@ void semaphor::new_thread(const uint16_t& a)
 	myId = std::move(a);
 	//qDebug() << "[THREAD]Creating a new semaphore-thread with id =" << myId;
 	sThread = new boost::thread(&semaphor::run_thread, this);
+	s_t_id = sThread->get_id();
 	if (sThread->joinable())
 		sThread->detach();
 }
@@ -364,7 +365,9 @@ void semaphor::run_thread()
 	}
 
 	//boost::this_thread::sleep_for(boost::chrono::milliseconds(1927));
-	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[THREAD]Run thread id=") + QString::number(0));
+	std::stringstream ss;
+	ss << s_t_id;
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[THREAD]Run thread id=0x") + QString::fromStdString(ss.str()).toUpper());
 
 	while (1)
 	{

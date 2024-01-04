@@ -28,6 +28,7 @@ class semaphor : public QWidget
 		uint16_t roadscanTimer;	//Таймер съемки дороги перед собой
 		uint16_t transitionAllowTimer;	//Таймер разрешения проезда
 		boost::thread *sThread;
+		boost::thread::id s_t_id;
 		bool roadBusy;	//Флаг занятой дороги
 	public:
 		bool stop_thread;

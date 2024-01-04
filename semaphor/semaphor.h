@@ -36,6 +36,7 @@ class semaphor : public QWidget
 		volatile uint16_t manager_query_code;	//Код запроса от менеджера
 		volatile uint16_t queue;	//Очередь из автомобилей
 		volatile bool transitAllowed;	//Флаг, разрешающий переключение светофора в зеный
+		volatile bool thread_wait;
 		semaphor();
 		~semaphor();
 		void run_thread();

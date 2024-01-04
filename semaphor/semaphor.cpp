@@ -29,6 +29,7 @@ semaphor::semaphor()
 	cycle_timer = 0;
 	stop_thread = 0;
 	cycle_speed = 1;
+	thread_wait = 1;	//Светофор запускается и сразу в паузу
 	neighbour = new boost::container::vector<uint16_t>;
 	polling_graph = new boost::container::vector<std::pair<uint8_t, uint8_t>>;
 }
@@ -354,6 +355,13 @@ void semaphor::run_thread()
 	uint16_t timer = 0;
 	while (1)
 	{
+		if (thread_wait)
+		{
+			while (thread_wait)
+			{
+				//NOP
+			}
+		}
 		//qDebug() << "[THREAD" << QString::number(myId) << "]Cycle" << cycle_cnt;
 
 		boost::this_thread::sleep_for(boost::chrono::milliseconds(cycle_speed));

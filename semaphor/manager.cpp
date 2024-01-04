@@ -897,3 +897,12 @@ void semaphor_manager::read_xml()
 		xml_set_file->close();
 	}
 }
+
+void semaphor_manager::run_all_semaphors()
+{
+	for (uint8_t a = 0; a < s_list.size(); ++a)
+	{
+		//Снимаем все потоки с паузы
+		s_list[a]->thread_wait = 0;
+	}
+}

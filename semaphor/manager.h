@@ -180,6 +180,9 @@ class semaphor_manager
 
 		//Грузим настройки из XML
 		void read_xml();
+
+		//Запускаем потоки(сбрасываем флаг semaphor_wait в каждом)
+		void run_all_semaphors();
 	signals:
 		void send_msg(QString);
 };

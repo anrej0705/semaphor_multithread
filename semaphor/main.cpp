@@ -117,13 +117,14 @@ int main(int argc, char *argv[])
     q_translator.load(QString("semaphor_ru_RU.qm"));
     qApp->installTranslator(&q_translator);
 
-    semaphor_gui::getInstance().show(); //СИНГЛТОН-ИНТЕРФЕЙС ХЕХЕХЕХХЕХЕХХЕХЕ
+    //Размещаем светофоры в окне - добавляем слот и графическое представление
     for (uint8_t a = 0; a < 12; ++a)
     {
         semaphor_gui::getInstance().add_slot(a);
         semaphor_gui::getInstance().add_graphic_semaphor(a, s_coords.at(a));
     }
 
+    //Создаем светофоры
     for (uint8_t a = 0; a < 12; ++a)
         semaphor_manager::getInstance().create_semaphor();
     for (uint8_t a = 0; a < 6; ++a)
@@ -140,6 +141,10 @@ int main(int argc, char *argv[])
             semaphor_manager::getInstance().add_parallel_zones(s_z_deps[a]);
     }
 
+    //Завершающий этап
+    semaphor_manager::getInstance().run_all_semaphors();
+
+    semaphor_gui::getInstance().show(); //СИНГЛТОН-ИНТЕРФЕЙС ХЕХЕХЕХХЕХЕХХЕХЕ
     //semaphor_manager::getInstance().run_queue_generator(true);
     semaphor_manager::getInstance().run_manager();
     semaphor_gui::getInstance().run_gui();

@@ -6,7 +6,7 @@
  </Settings>
  <Settings attr="uint16_t">
   <param>generator_speed_cycle</param>
-  <value>4</value>
+  <value>4096</value>
  </Settings>
  <Settings attr="uint16_t">
   <param>manager_speed_cycle</param>

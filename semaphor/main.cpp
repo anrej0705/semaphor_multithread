@@ -142,10 +142,10 @@ int main(int argc, char *argv[])
     }
 
     //Завершающий этап
-    semaphor_manager::getInstance().run_all_semaphors();
 
     semaphor_gui::getInstance().show(); //СИНГЛТОН-ИНТЕРФЕЙС ХЕХЕХЕХХЕХЕХХЕХЕ
     //semaphor_manager::getInstance().run_queue_generator(true);
+    semaphor_manager::getInstance().run_all_semaphors(); 
     semaphor_manager::getInstance().run_manager();
     semaphor_gui::getInstance().run_gui();
 

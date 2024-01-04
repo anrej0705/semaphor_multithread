@@ -68,7 +68,7 @@ semaphor_gui::semaphor_gui(QWidget* qwgt) : QWidget(qwgt)
 
 	semaphor_manager::getInstance().set_gen_freq(167-25);
 
-	this->setWindowTitle("Semaphors v1.1a");
+	this->setWindowTitle("Semaphors v1.1b");
 
 	semaphor_slots = new boost::container::vector<semaphor_slot*>;
 	//semaphor_graphic_arr = new boost::container::vector<semaphor_graphic*>;
@@ -250,10 +250,10 @@ void semaphor_gui::write_queue_cnt(const uint16_t& sem_id, uint16_t queue_cnt)
 }
 
 //Записывает в таблицу информацию. Вызывается менеджером
-void semaphor_gui::write_table_content(uint8_t section_num, uint8_t row_num, uint16_t arg)
+void semaphor_gui::write_table_content(const uint8_t& section_num, const uint8_t& row_num, const uint16_t& arg)
 {
-	QModelIndex index = table->index(section_num, row_num);
-	table->setData(index, arg, Qt::EditRole);
+	QModelIndex index = table->index(std::move(section_num), std::move(row_num));
+	table->setData(index, std::move(arg), Qt::EditRole);
 	//table->dataChanged(index, index);
 }
 
@@ -315,10 +315,10 @@ void semaphor_gui::set_signal(const uint16_t& sem_id, bool signal)
 //Запись сообщения в консоль пользователя(не бекенд!)
 void semaphor_gui::slot_post_console_msg(QString msg)
 {
-	//THREAD_LOCK
+	THREAD_LOCK
 	console->append(msg);
 	//console->append("\r");
-	//NOTIFY_ALL_THREAD
+	NOTIFY_ALL_THREAD
 }
 
 //Отображение ГУЯ
@@ -364,9 +364,9 @@ void semaphor_gui::switch_generator_mode()
 }
 
 //Добавляет графическое представление светофора с привязкой к ИД на карту
-void semaphor_gui::add_graphic_semaphor(const uint16_t& sem_id, std::pair<int16_t, int16_t> sem_coord)
+void semaphor_gui::add_graphic_semaphor(const uint16_t& sem_id, const std::pair<int16_t, int16_t>& sem_coord)
 {
-	s_graph[sem_id]->set_coord(sem_coord.first, sem_coord.second);
+	s_graph[sem_id]->set_coord(std::move(sem_coord.first), std::move(sem_coord.second));
 	//s_graph[sem_id]->set_state(1);
 	//semaphor_graphic_arr->push_back(new semaphor_graphic(this, sem_id, sem_coord.first, sem_coord.second));
 	//semaphor_graphic_arr->at(s_g_cnt) = new semaphor_graphic(this, sem_id, sem_coord.first, sem_coord.second);
@@ -377,9 +377,9 @@ void semaphor_gui::set_semaphor_speed(int frequency)
 	semaphor_manager::getInstance().set_semaphor_speed(static_cast<uint16_t>(frequency));
 }
 
-void semaphor_gui::set_refresh_interval_ms(uint16_t ms)
+void semaphor_gui::set_refresh_interval_ms(const uint16_t& ms)
 {
-	refresh_interval = ms;
+	refresh_interval = std::move(ms);
 }
 
 //Инициализация интерфейса слота панели управления светофором

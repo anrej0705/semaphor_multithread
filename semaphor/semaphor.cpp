@@ -51,6 +51,7 @@ void semaphor::new_thread(const uint16_t& a)
 	myId = std::move(a);
 	//qDebug() << "[THREAD]Creating a new semaphore-thread with id =" << myId;
 	sThread = new boost::thread(&semaphor::run_thread, this);
+	s_t_id = sThread->get_id();
 	if (sThread->joinable())
 		sThread->detach();
 }
@@ -347,21 +348,29 @@ uint8_t semaphor::get_cycle_timer_value()
 //Основной поток светофора
 void semaphor::run_thread()
 {
-	//Задержка запуска, для того чтобы всё зависящее успело инициализироваться
-	boost::this_thread::sleep_for(boost::chrono::microseconds(2927));
-
 	//QString logout;
 	uint16_t cycle_cnt = 0;
 	uint16_t timer = 0;
+
+	//Задержка запуска, для того чтобы всё зависящее успело инициализироваться
+
+	//thread_wait = 1;
+
+	if (thread_wait)
+	{
+		while (thread_wait)
+		{
+			//NOP ждём, т.к пауза цикла
+		}
+	}
+
+	//boost::this_thread::sleep_for(boost::chrono::milliseconds(1927));
+	std::stringstream ss;
+	ss << s_t_id;
+	semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[THREAD]Run thread ID=0x") + QString::fromStdString(ss.str()).toUpper());
+
 	while (1)
 	{
-		if (thread_wait)
-		{
-			while (thread_wait)
-			{
-				//NOP
-			}
-		}
 		//qDebug() << "[THREAD" << QString::number(myId) << "]Cycle" << cycle_cnt;
 
 		boost::this_thread::sleep_for(boost::chrono::milliseconds(cycle_speed));

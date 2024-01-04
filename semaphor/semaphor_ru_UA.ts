@@ -45,7 +45,7 @@
     </message>
     <message>
         <source>[MANAGER]Set queue size </source>
-        <translation>[МЕНЕДЖЕР]Задание размера очереди </translation>
+        <translation>[МЕНЕДЖЕР]Заданю длину очереди </translation>
     </message>
     <message>
         <source>[MANAGER]Decrement queue to id </source>
@@ -126,6 +126,14 @@
     <message>
         <source>[MANAGER]XML file not found. Making new</source>
         <translation>[МЕНЕДЖЕР]Файл настроек XML не найден. Создаю новый</translation>
+    </message>
+    <message>
+        <source>[THREAD]Run thread ID=0x</source>
+        <translation>[ПОТОКИ]Запущен поток с ИД=0x</translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Read succesfully, file closed</source>
+        <translation>[XML ПАРСЕР]Загрузка завершена, закрываю файл</translation>
     </message>
 </context>
 <context>

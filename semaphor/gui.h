@@ -100,14 +100,14 @@ class semaphor_gui : public QWidget
 	public:
 		static semaphor_gui& getInstance();
 		void add_slot(uint16_t sem_id);
-		void add_graphic_semaphor(const uint16_t& sem_id, std::pair<int16_t, int16_t>);
+		void add_graphic_semaphor(const uint16_t& sem_id, const std::pair<int16_t, int16_t>&);
 		void write_queue_cnt(const uint16_t& sem_id, uint16_t queue_cnt);
-		void write_table_content(uint8_t section_num, uint8_t row_num, uint16_t arg);
+		void write_table_content(const uint8_t& section_num, const uint8_t& row_num, const uint16_t& arg);
 		void set_signal(const uint16_t& sem_id, bool signal);
 		void run_gui();
 		void gui();
 		void closeEvent(QCloseEvent* ce);
-		void set_refresh_interval_ms(uint16_t ms);
+		void set_refresh_interval_ms(const uint16_t& ms);
 	public slots:
 		void set_generator_frequency(int frequency);
 		void set_semaphor_speed(int speed);

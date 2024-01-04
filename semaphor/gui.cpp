@@ -315,10 +315,10 @@ void semaphor_gui::set_signal(const uint16_t& sem_id, bool signal)
 //Запись сообщения в консоль пользователя(не бекенд!)
 void semaphor_gui::slot_post_console_msg(QString msg)
 {
-	//THREAD_LOCK
+	THREAD_LOCK
 	console->append(msg);
 	//console->append("\r");
-	//NOTIFY_ALL_THREAD
+	NOTIFY_ALL_THREAD
 }
 
 //Отображение ГУЯ

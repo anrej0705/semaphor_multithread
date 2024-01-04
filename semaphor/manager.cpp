@@ -69,7 +69,7 @@ semaphor_manager::semaphor_manager()
 	
 	//Параметры по умолчанию
 	semaphor_timer_speed = 42;
-	generator_timer_speed = 4;
+	generator_timer_speed = 4096;
 	manager_speed_cycle = 10;
 	gui_refresh_speed_cycle = 50;
 	gui_refresh_interval_cycle = -1;
@@ -321,7 +321,7 @@ void semaphor_manager::queueGenerator()
 		++cycle_cnt;
 
 		//Задержка
-		boost::this_thread::sleep_for(boost::chrono::milliseconds(generator_timer_speed));
+		boost::this_thread::sleep_for(boost::chrono::microseconds(generator_timer_speed));
 	}
 }
 

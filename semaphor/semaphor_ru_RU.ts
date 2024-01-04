@@ -131,6 +131,10 @@
         <source>[THREAD]Run thread ID=0x</source>
         <translation>[ПОТОКИ]Запущен поток с ИД=0x</translation>
     </message>
+    <message>
+        <source>[XML PARSER]Read succesfully, file closed</source>
+        <translation>[XML ПАРСЕР]Загрузка завершена, закрываю файл</translation>
+    </message>
 </context>
 <context>
     <name>semaphorClass</name>

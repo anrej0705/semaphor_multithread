@@ -868,7 +868,10 @@ void semaphor_manager::read_xml()
 								token = xml_set.readNext();
 							}
 							//qDebug() << xml_set.text();
-							break;	//Вырубаем цикл так как всё прочитано уже
+							semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Read succesfully, file closed"));
+							xml_set_file->close();	//Костыль, потом исправлю
+							return;
+							//break;	//Вырубаем цикл так как всё прочитано уже
 						}
 					}
 				}

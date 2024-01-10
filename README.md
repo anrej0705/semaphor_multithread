@@ -23,6 +23,8 @@
 
 :computer: DirectX 9.0 Видеокарта :computer:
 
+Создано с помощью редактора [LiteMD](https://github.com/anrej0705/LiteMD) версии 0.1.8.1045
+
 <hr>
 
 ## Как запустить

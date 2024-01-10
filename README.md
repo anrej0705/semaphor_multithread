@@ -2,14 +2,26 @@
 
 ![Qt](https://img.shields.io/badge/Qt-%23217346.svg?style=for-the-badge&logo=Qt&logoColor=white)
 ![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 ![MSVC](https://img.shields.io/badge/Visual_Studio-5C2D91?style=for-the-badge&logo=visual%20studio&logoColor=white)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 **| Qt 5.14.2 
 | C++17 
+| C11 
 | MSVC 2019 
 | Boost 1.84.00
 | GPL v2 license |**
+
+:computer: *Адаптировано под разрешение 1600х900* :computer:
+
+:computer: *Windows 7 SP1* :computer:
+
+:computer: Pentium 4 2.0GHz+ :computer:
+
+:computer: 512+ MB RAM :computer:
+
+:computer: DirectX 9.0 Видеокарта :computer:
 
 Программа моделирует движение на перекрестке по упрощённой модели. Светофоры работают каждый в своей зоне - принадлежность светофоров к зоне можно увидеть в таблице ниже(столбцы - зоны, строки - светофоры)
 

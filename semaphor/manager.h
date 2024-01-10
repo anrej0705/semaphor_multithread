@@ -29,14 +29,20 @@ class semaphor_manager
 		QDomElement* manager_speed_cycles;	//Длина в мс
 		QDomElement* gui_refresh_speed_cycles;	//Длина в мс
 		QDomElement* gui_refresh_interval;	//Длина в циклах
-		QDomElement* xml_set_element;
+		QDomElement* car_pass;	//Длина в циклах
+		QDomElement* tcp_port_n;	//Длина в циклах
+		QDomElement* theme_n;
 		QFile* xml_set_file;
 
+		uint16_t vesrion_number;
 		uint16_t generator_timer_speed;
 		uint16_t semaphor_timer_speed;
 		uint16_t manager_speed_cycle;
 		uint16_t gui_refresh_speed_cycle;
 		uint16_t gui_refresh_interval_cycle;
+		uint16_t car_pass_in_one_iteration;
+		uint16_t tcp_port;
+		uint16_t theme_code;
 
 		bool generator_mode;
 		bool calc;

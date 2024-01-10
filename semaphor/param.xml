@@ -20,4 +20,16 @@
   <param>gui_refresh_interval</param>
   <value>65535</value>
  </Settings>
+ <Settings attr="uint16_t">
+  <param>car_pass_in_one_iteration</param>
+  <value>1</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>tcp_port</param>
+  <value>1700</value>
+ </Settings>
+ <Settings attr="uint16_t">
+  <param>theme_code</param>
+  <value>1</value>
+ </Settings>
 </__Shani_basic>

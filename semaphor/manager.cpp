@@ -68,11 +68,15 @@ semaphor_manager::semaphor_manager()
 	semaphor_speed = 1;
 	
 	//Параметры по умолчанию
+	vesrion_number = 4;	//КОНСТАНТА
 	semaphor_timer_speed = 42;
 	generator_timer_speed = 4096;
 	manager_speed_cycle = 10;
 	gui_refresh_speed_cycle = 50;
 	gui_refresh_interval_cycle = -1;
+	car_pass_in_one_iteration = 1;
+	tcp_port = 1700;
+	theme_code = 1;
 }
 //Пустой деструктор
 semaphor_manager::~semaphor_manager()
@@ -809,7 +813,7 @@ void semaphor_manager::read_xml()
 									token = xml_set.readNext();
 									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
 									generator_timer_speed = xml_set.text().toInt();
-									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set generator speed ") + QString::number(generator_timer_speed) + QObject::tr(" ms"));
+									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set generator speed ") + QString::number(generator_timer_speed) + QObject::tr(" us"));
 									//qDebug() << QString::number(generator_timer_speed);
 								}
 								token = xml_set.readNext();
@@ -868,10 +872,73 @@ void semaphor_manager::read_xml()
 								token = xml_set.readNext();
 							}
 							//qDebug() << xml_set.text();
-							semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Read succesfully, file closed"));
-							xml_set_file->close();	//Костыль, потом исправлю
-							return;
-							//break;	//Вырубаем цикл так как всё прочитано уже
+						}
+						else if (xml_set.text() == "car_pass_in_one_iteration")	//Не используется
+						{
+							while (xml_set.name() != "Settings")
+							{
+								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+								if (token == QXmlStreamReader::StartElement)
+								{
+									token = xml_set.readNext();
+									//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+									car_pass_in_one_iteration = xml_set.text().toInt();
+									semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set car pass num ") + QString::number(car_pass_in_one_iteration) + "");
+									//qDebug() << QString::number(gui_refresh_interval_cycle);
+								}
+								token = xml_set.readNext();
+							}
+							//qDebug() << xml_set.text();
+						}
+						else if (xml_set.text() == "tcp_port")	//Не используется
+						{
+						while (xml_set.name() != "Settings")
+						{
+							//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+							if (token == QXmlStreamReader::StartElement)
+							{
+								token = xml_set.readNext();
+								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+								tcp_port = xml_set.text().toInt();
+								semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set port ") + QString::number(tcp_port) + "");
+								//qDebug() << QString::number(gui_refresh_interval_cycle);
+							}
+							token = xml_set.readNext();
+						}
+						//qDebug() << xml_set.text();
+						}
+						else if (xml_set.text() == "theme_code")	//Не используется
+						{
+						while (xml_set.name() != "Settings")
+						{
+							//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+							if (token == QXmlStreamReader::StartElement)
+							{
+								token = xml_set.readNext();
+								//qDebug() << xml_set.tokenString() << xml_set.name() << xml_set.text();
+								theme_code = xml_set.text().toInt();
+								switch (theme_code)
+								{
+									case 0:
+									{
+										semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set theme DARK"));
+										break;
+									}
+									case 1:
+									{
+										semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Set theme LIGTH"));
+										break;
+									}
+								}
+								//qDebug() << QString::number(gui_refresh_interval_cycle);
+							}
+							token = xml_set.readNext();
+						}
+						//qDebug() << xml_set.text();
+						semaphor_gui::getInstance().slot_post_console_msg(QObject::tr("[XML PARSER]Read succesfully, file closed"));
+						xml_set_file->close();	//Костыль, потом исправлю
+						return;
+						//break;	//Вырубаем цикл так как всё прочитано уже
 						}
 					}
 				}
@@ -891,11 +958,17 @@ void semaphor_manager::read_xml()
 		manager_speed_cycles = new QDomElement(parametr(*xml_set_document, "manager_speed_cycle", QString::number(manager_speed_cycle)));
 		gui_refresh_speed_cycles = new QDomElement(parametr(*xml_set_document, "gui_refresh_cycle", QString::number(gui_refresh_speed_cycle)));
 		gui_refresh_interval = new QDomElement(parametr(*xml_set_document, "gui_refresh_interval", QString::number(gui_refresh_interval_cycle)));
+		car_pass = new QDomElement(parametr(*xml_set_document, "car_pass_in_one_iteration", QString::number(car_pass_in_one_iteration)));
+		tcp_port_n = new QDomElement(parametr(*xml_set_document, "tcp_port", QString::number(tcp_port)));
+		theme_n = new QDomElement(parametr(*xml_set_document, "theme_code", QString::number(theme_code)));
 		xml_set_element.appendChild(*semaphor_speed_cycles);
 		xml_set_element.appendChild(*generator_speed_cycles);
 		xml_set_element.appendChild(*manager_speed_cycles);
 		xml_set_element.appendChild(*gui_refresh_speed_cycles);
 		xml_set_element.appendChild(*gui_refresh_interval);
+		xml_set_element.appendChild(*car_pass);
+		xml_set_element.appendChild(*tcp_port_n);
+		xml_set_element.appendChild(*theme_n);
 		QTextStream(xml_set_file) << xml_set_document->toString();
 		xml_set_file->close();
 	}

@@ -133,7 +133,27 @@
     </message>
     <message>
         <source>[XML PARSER]Read succesfully, file closed</source>
-        <translation>[XML ПАРСЕР]Загрузка завершена, закрываю файл</translation>
+        <translation type="vanished">[XML ПАРСЕР]Загрузка завершена, закрываю файл</translation>
+    </message>
+    <message>
+        <source> us</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Set car pass num </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Set port </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Set theme DARK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[XML PARSER]Set theme LIGTH</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

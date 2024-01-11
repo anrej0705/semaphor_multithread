@@ -9,6 +9,10 @@
 #include <map>
 #include <QtWidgets>
 #include <qdom.h>
+
+//Увековечено в коде
+const char config_signature_shani_basic[] = "__Shani_basic";
+
 class semaphor_manager;
 class singlet_destroyer
 {

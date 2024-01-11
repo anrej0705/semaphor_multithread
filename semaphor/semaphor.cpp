@@ -86,7 +86,7 @@ void semaphor::request_neighbour_status()
 	{
 		neighbout_reg_state.at(a) = semaphor_manager::getInstance().semaphor_request(neighbour->at(a),0x01);
 		//logout += "[THREAD]Requested semaphore id=" + QString::number(neighbour->at(a)) + " return response status ";
-		switch (neighbout_reg_state.at(a))
+		/*switch (neighbout_reg_state.at(a))
 		{
 			case 0x00:
 			{
@@ -108,7 +108,7 @@ void semaphor::request_neighbour_status()
 				//logout += "GREEN";
 				break;
 			}
-		}
+		}*/
 		//qDebug() << logout;
 		//logout.clear();
 	}
@@ -124,14 +124,13 @@ bool semaphor::road_safety_check()
 {
 	//if(myId == 0x0009 || myId == 0x000A || myId == 0x000B)
 	//	qDebug() << "[THREAD" << QString::number(myId) << "]Check road";
-	bool accepted = 1;
 	for (uint8_t a = 0; a < static_cast<uint8_t>(neighbour->size()); ++a)
 	{
 		if (neighbout_reg_state[a] == RED)
 		{
 			//if (myId == 0x0009 || myId == 0x000A || myId == 0x000B)
 			//	qDebug() << "[THREAD]Semaphor id=" << QString::number(myId) << "Safety check: TRANSIT ALLOWED with status" << QString::number(neighbout_reg_state[a]);
-			accepted = 1;
+			return 1;
 		}
 		else
 		{
@@ -140,7 +139,7 @@ bool semaphor::road_safety_check()
 			return 0;
 		}
 	}
-	return accepted;
+	return 1;
 }
 
 //Пропуск автомобиля
@@ -150,7 +149,7 @@ void semaphor::car_pass()
 	if (queue > 0 && transitAllowed == 1)
 	{
 		//logout += "[THREAD][ " + QString::fromStdString(myName) + " ][ID=" + QString::number(myId).leftJustified(2, ' ') +"][    PASS    ][Queue size=" + QString::number(queue).leftJustified(3, ' ') + "][neighbours status:";
-		for (uint8_t a = 0; a < static_cast<uint8_t>(neighbour->size()); ++a)
+		/*for (uint8_t a = 0; a < static_cast<uint8_t>(neighbour->size()); ++a)
 		{
 			switch (neighbout_reg_state[a])
 			{
@@ -175,13 +174,13 @@ void semaphor::car_pass()
 					break;
 				}
 			}
-		}
+		}*/
 		//logout += "]";
 		//qDebug() << "[THREAD]Semaphor id=" << QString::number(myId).leftJustified(2, ' ') << "queue size =" << QString::number(queue).leftJustified(4, ' ') << "PASS";
 		transitAllowed = 0;
 		--queue;
 	}
-	else
+	/*else
 	{
 		//logout += "[THREAD][ " + QString::fromStdString(myName) + " ][ID=" + QString::number(myId).leftJustified(2, ' ') + "][ NO TRANSIT ][Queue size=" + QString::number(queue).leftJustified(3, ' ') + "][neighbours status:";
 		for (uint8_t a = 0; a < static_cast<uint8_t>(neighbour->size()); ++a)
@@ -212,7 +211,7 @@ void semaphor::car_pass()
 		}
 		//logout += "]";
 		//qDebug() << "[THREAD]Semaphor id=" << QString::number(myId) << "queue size =" << QString::number(queue).leftJustified(4, ' ') << "NO TRANSIT";
-	}
+	}*/
 	//qDebug() << logout;
 }
 
@@ -396,7 +395,7 @@ void semaphor::run_thread()
 		semaphor_gui::getInstance().write_queue_cnt(myId, queue);
 
 		//Запрашиваем у менеджера состояние соседей
-		for (uint8_t a = 0; a < static_cast<uint8_t>(neighbour->size()); ++a)
+		/*for (uint8_t a = 0; a < static_cast<uint8_t>(neighbour->size()); ++a)
 		{
 			switch (neighbout_reg_state[a])
 			{
@@ -435,7 +434,7 @@ void semaphor::run_thread()
 			}
 			//qDebug() << logout;
 			//logout.clear();
-		}
+		}*/
 
 		//Проверяем пропускает ли какой нибудь сосед машины
 		if (road_safety_check()&&queue>0)
